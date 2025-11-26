@@ -5,10 +5,18 @@ name: CI - Laravel App
 on:
   # Se ejecuta en cada push a las ramas "main" y "develop".
   push:
-    branches: ["main", "develop"]
+    branches: 
+    - main
+    - develop
+    - frontend
+    - backend
   # Se ejecuta en cada pull request dirigido a las ramas "main" y "develop".
   pull_request:
-    branches: ["main", "develop"]
+    branches: 
+    - main
+    - develop
+    - frontend
+    - backend
 
 # Define los trabajos (jobs) que se ejecutarán como parte del flujo de trabajo.
 jobs:
