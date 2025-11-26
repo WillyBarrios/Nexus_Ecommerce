@@ -8,15 +8,15 @@ on:
     branches:  
     - main
     - develop
-    - Frontend
-    - Backend
+    - frontend
+    - backend
   # Se ejecuta en cada pull request dirigido a las ramas "main" y "develop".
   pull_request:
     branches:     
     - main
     - develop
-    - Frontend
-    - Backend
+    - frontend
+    - backend
 
 # Define los trabajos (jobs) que se ejecutarán como parte del flujo de trabajo.
 jobs:
