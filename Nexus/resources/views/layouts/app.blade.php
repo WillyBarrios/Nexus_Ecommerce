@@ -13,7 +13,7 @@
 <body class="bg-white text-gray-900">
 
     {{-- NAVBAR --}}
-    <header class="w-full bg-white/70 backdrop-blur-xl border-b border-gray-200">
+    <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
 
             {{-- LOGO --}}
@@ -84,7 +84,7 @@
         @yield('content')
     </main>
 
- <footer class="mt-20 py-12 bg-[#6f73bf] text-white">
+ <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
 
         {{-- CONTENEDOR EN DOS COLUMNAS --}}
