@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     {{-- YA NO USAMOS FONT AWESOME --}}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-gray-900 flex flex-col min-h-screen">
-
+<body class="bg-white text-gray-900">
 
     {{-- NAVBAR --}}
-    <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
+    <header class="w-full bg-white/70 backdrop-blur-xl border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
 
             {{-- LOGO --}}
@@ -85,9 +84,7 @@
         @yield('content')
     </main>
 
-
-
- <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
+ <footer class="mt-20 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
 
         {{-- CONTENEDOR EN DOS COLUMNAS --}}
