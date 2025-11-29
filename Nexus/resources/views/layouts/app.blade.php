@@ -10,13 +10,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-gray-900">
-
-{{-- nav. solo se muestra si NO estamos en login --}}
-    @if(!request()->is('login') && !request()->is('register'))
-        <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
-            <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
-
+<body class="bg-white text-gray-900 flex flex-col min-h-screen">
 
 
     {{-- NAVBAR --}}
@@ -85,12 +79,13 @@
             </div>
         </div>
     </header>
-    @endif <!--cierra el if del nav-->
 
     {{-- CONTENIDO --}}
     <main>
         @yield('content')
     </main>
+
+
 
  <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
