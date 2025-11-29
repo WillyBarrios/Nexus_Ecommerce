@@ -12,6 +12,13 @@
 
 <body class="bg-white text-gray-900">
 
+{{-- nav. solo se muestra si NO estamos en login --}}
+    @if(!request()->is('login') && !request()->is('register'))
+        <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+
+
+
     {{-- NAVBAR --}}
     <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
@@ -78,6 +85,7 @@
             </div>
         </div>
     </header>
+    @endif <!--cierra el if del nav-->
 
     {{-- CONTENIDO --}}
     <main>
