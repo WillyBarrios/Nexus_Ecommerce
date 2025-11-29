@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
-// 1. Página principal → siempre lleva al login primero
+// Página principal → siempre lleva al login primero
 Route::get('/', function () {
     return redirect('/login');
 });
 
-// 2. Login
+// Login
 Route::get('/login', function () {
     return view('login');
 })->name('login');
@@ -18,15 +18,26 @@ Route::post('/login', function () {
     return redirect('/home');
 });
 
-// 3. Home / Dashboard (protegido)
+//ruta para olvide mi contrasena
+Route::get('/password', function () {
+    return view('password');
+});
+
+//ruta para creacion de usuario
+Route::get('/register', function () {
+    return view('register');
+});
+
+
+// 3. Home (protegido)
 Route::get('/home', function () {
     if (!session('logged_in')) {
         return redirect('/login');
     }
-    return view('home'); // tu home.blade.php
+    return view('home');
 })->name('home');
 
-// 4. Logout
+//. Logout
 Route::post('/logout', function () {
     session()->flush();
     return redirect('/login');
