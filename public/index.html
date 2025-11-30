@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Autenticación Nexus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .endpoints {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .endpoints h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .endpoints code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .endpoints ul {
+            list-style: none;
+            padding: 0;
+        }
+        .endpoints li {
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .endpoints li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Sistema de Autenticación Nexus</h1>
+        
+        <div class="status">
+            ✅ Servidor funcionando correctamente
+        </div>
+        
+        <p>
+            Sistema completo de autenticación con Laravel 12 y Sanctum.<br>
+            Incluye registro, login, logout y recuperación de contraseña.
+        </p>
+        
+        <a href="/test.html" class="btn">🧪 Abrir Página de Pruebas</a>
+        
+        <div class="endpoints">
+            <h3>📡 Endpoints Disponibles:</h3>
+            <ul>
+                <li><code>POST /api/register</code> - Registrar usuario</li>
+                <li><code>POST /api/login</code> - Iniciar sesión</li>
+                <li><code>GET /api/user</code> - Obtener usuario</li>
+                <li><code>POST /api/logout</code> - Cerrar sesión</li>
+                <li><code>POST /api/password/forgot</code> - Recuperar contraseña</li>
+                <li><code>POST /api/password/reset</code> - Restablecer contraseña</li>
+            </ul>
+        </div>
+        
+        <p style="margin-top: 20px; font-size: 14px; color: #999;">
+            Desarrollado con Laravel 12 + Sanctum
+        </p>
+    </div>
+</body>
+</html>
