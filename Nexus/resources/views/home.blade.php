@@ -19,7 +19,7 @@
                     Encuentra lo<br> que buscas
                 </h2>
 
-                <p class="font-bold text-[#2128A6] mt-4 text-lg max-w-md">
+                <p class="font-bold text-[#2128A6] mt-4 text-2xl max-w-md">
                     Productos seleccionados para  <br> tu estilo de vida.
                 </p>
 <div class="flex flex-col justify-center max-w-md">
@@ -53,10 +53,10 @@
     </section>
 
     {{-- PRODUCTOS NUEVOS (CARRUSEL) --}}
-<section class="bg-white py-16">
+<section class="bg-[#f4f6fb] py-16">
     <div class="max-w-7xl mx-auto px-8">
 
-        <h3 class="text-2xl font-bold text-gray-900 mb-8">
+        <h3 class="text-3xl text-[#2128A6] font-extrabold  mb-8">
             Productos nuevos
         </h3>
 
@@ -81,16 +81,16 @@
                 <article
                     class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
                     <div>
-                        <img src="img/tabk10.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Televisión Retro">
-                        <h4 class="font-semibold text-gray-900">Tab K10 Lenovo </h4>
-                        <p class="text-sm text-gray-500 mt-1">
+                        <img src="img/tabk10.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Tablet">
+                        <h4 class="font-semibold text-[#6F73BF] ">Tab K10 Lenovo </h4>
+                        <p class="text-sm text-black mt-1">
                             El tamaño de la pantalla de 10.3 pulgadas y la resolución de 1920 x 1200 permiten imágenes fluidas, lectura de contenido fácil 
                         </p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-[#3d50ff]">Q 1800.00</p>
+                        <p class="font-bold text-[#2128a6]">Q 1800.00</p>
                         <button
-                            class="mt-3 w-full bg-[#3d50ff] hover:bg-[#2936c7] text-white text-sm font-semibold py-2.5 rounded-lg">
+                            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
                             Añadir al carrito
                         </button>
                     </div>
@@ -100,16 +100,16 @@
                 <article
                     class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
                     <div>
-                        <img src="/img/especieros.png" class="rounded-xl mb-4 w-full object-cover" alt="Especieros">
-                        <h4 class="font-semibold text-gray-900">Especieros</h4>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Juego de contenedores elegantes para cocina.
+                        <img src="/img/audifonos.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Audifonos">
+                        <h4 class="font-semibold text-[#6F73BF] ">Audifonos JBL Tune 760NC</h4>
+                        <p class="text-sm text-black mt-1">
+                            Hasta 70 horas de reproducción total. Carga rápida de 5 minutos para 3 horas. Carga total en 2 horas.
                         </p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-[#3d50ff]">Q 350.00</p>
+                        <p class="font-bold text-[#2128a6]">Q 950.00</p>
                         <button
-                            class="mt-3 w-full bg-[#3d50ff] hover:bg-[#2936c7] text-white text-sm font-semibold py-2.5 rounded-lg">
+                            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
                             Añadir al carrito
                         </button>
                     </div>
@@ -119,16 +119,16 @@
                 <article
                     class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
                     <div>
-                        <img src="/img/guantes.png" class="rounded-xl mb-4 w-full object-cover" alt="Guantes">
-                        <h4 class="font-semibold text-gray-900">Guantes</h4>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Guantes deportivos de alta resistencia.
+                        <img src="/img/lenovolaptop.jpg" class="rounded-xl mb-4 w-full object-cover" alt="laptoplenovo">
+                        <h4 class="font-semibold text-[#6F73BF] ">Laptop Lenovo IdeaPad Slim 3</h4>
+                        <p class="text-sm text-black mt-1">
+                            Disfruta de archivos multimedia enriquecidos en una pantalla nítida de 15″ y Dolby Audio™.
                         </p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-[#3d50ff]">Q 120.00</p>
+                        <p class="font-bold text-[#2128a6]">Q 5,000.00</p>
                         <button
-                            class="mt-3 w-full bg-[#3d50ff] hover:bg-[#2936c7] text-white text-sm font-semibold py-2.5 rounded-lg">
+                            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
                             Añadir al carrito
                         </button>
                     </div>
@@ -138,16 +138,16 @@
                 <article
                     class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
                     <div>
-                        <img src="/img/tiro-arco.png" class="rounded-xl mb-4 w-full object-cover" alt="Tiro al arco">
-                        <h4 class="font-semibold text-gray-900">Tiro al arco</h4>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Set de arco para práctica recreativa.
+                        <img src="/img/perfumehugoboss.jpg" class="rounded-xl mb-4 w-full object-cover" alt="perfume hugo boss">
+                        <h4 class="font-semibold text-[#6F73BF] ">Boss Bottled 100ml</h4>
+                        <p class="text-sm text-black mt-1">
+                            Es una fragancia cálida ideal para el invierno o climas fríos. Diseñada para hombres competitivos, decididos y contemporáneos.
                         </p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-[#3d50ff]">Q 750.00</p>
+                        <p class="font-bold text-[#2128a6]">Q1,500.00</p>
                         <button
-                            class="mt-3 w-full bg-[#3d50ff] hover:bg-[#2936c7] text-white text-sm font-semibold py-2.5 rounded-lg">
+                            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
                             Añadir al carrito
                         </button>
                     </div>
@@ -157,16 +157,16 @@
                 <article
                     class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
                     <div>
-                        <img src="/img/audifonos.png" class="rounded-xl mb-4 w-full object-cover" alt="Audífonos">
-                        <h4 class="font-semibold text-gray-900">Audífonos inalámbricos</h4>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Sonido nítido y cómodo.
+                        <img src="/img/bailarinaszapato.webp" class="rounded-xl mb-4 w-full object-cover" alt="Audífonos">
+                        <h4 class="font-semibold text-[#6F73BF] ">Bailarina efecto terciopelo</h4>
+                        <p class="text-sm text-black mt-1">
+                            Escote cuadrado. Cierre mediante hebilla metálica en el empeine. Acabado en punta redonda.
                         </p>
                     </div>
                     <div class="mt-4">
-                        <p class="font-bold text-[#3d50ff]">Q 420.00</p>
+                        <p class="font-bold text-[#2128a6]">Q 400.00</p>
                         <button
-                            class="mt-3 w-full bg-[#3d50ff] hover:bg-[#2936c7] text-white text-sm font-semibold py-2.5 rounded-lg">
+                            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
                             Añadir al carrito
                         </button>
                     </div>
@@ -190,7 +190,7 @@
         {{-- BOTÓN VER TODO --}}
         <div class="text-center mt-12">
             <button
-                class="inline-flex items-center justify-center bg-[#3d50ff] hover:bg-[#2936c7] text-white font-semibold px-10 py-3 rounded-full shadow-md transition">
+                class="inline-flex items-center justify-center bg-[#2128a6] text-white font-semibold px-20 py-3 rounded-full shadow-md transition">
                 Ver todo lo nuevo
             </button>
         </div>
@@ -204,50 +204,50 @@
 
             {{-- Envío gratis 1 --}}
             <div class="flex flex-col items-center">
-                <div class="w-12 h-12 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
+                <div class="w-25 h-25 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
                     {{-- icono camión --}}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         class="w-6 h-6 text-[#3d50ff]" fill="none" stroke="currentColor" stroke-width="2">
+                         class="w-20 h-20 text-[#2128a6]" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M3 7h10v9H3zM13 10h3.5L21 13v3h-8zM7 18a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
-                <h4 class="font-semibold text-[#3d50ff]">Envío gratis</h4>
-                <p class="text-sm text-gray-600 mt-1">
+                <h4 class="font-semibold text-xl text-[#6F73BF]">Envío gratis</h4>
+                <p class="text-sm text-black mt-1">
                     En compras mayores a Q300.
                 </p>
             </div>
 
-            {{-- Envío gratis 2 / soporte --}}
+            {{-- soporte  / soporte --}}
             <div class="flex flex-col items-center">
-                <div class="w-12 h-12 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
+                <div class="w-25 h-25 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
                     {{-- icono soporte / callcenter --}}
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-     stroke-width="2" stroke="currentColor"
-     class="w-7 h-7 text-[#3d50ff]">
-  <path stroke-linecap="round" stroke-linejoin="round"
-        d="M12 1a9 9 0 00-9 9v4a3 3 0 003 3h1v-7H6V10a6 6 0 0112 0v3h-1v7h1a3 3 0 003-3v-4a9 9 0 00-9-9zm-4 18h4m4 0h-4" />
-</svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="2" stroke="currentColor"
+                 class="w-20 h-20  text-[#2128a6]">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 1a9 9 0 00-9 9v4a3 3 0 003 3h1v-7H6V10a6 6 0 0112 0v3h-1v7h1a3 3 0 003-3v-4a9 9 0 00-9-9zm-4 18h4m4 0h-4" />
+                </svg>
 
                 </div>
-                <h4 class="font-semibold text-[#3d50ff]">Atención 24/7</h4>
-                <p class="text-sm text-gray-600 mt-1">
+                <h4 class="font-semibold text-xl text-[#6F73BF]">Soporte 24/7</h4>
+                <p class="text-sm text-black mt-1">
                     30 días para reportar inconvenientes.
                 </p>
             </div>
 
             {{-- Garantía --}}
             <div class="flex flex-col items-center">
-                <div class="w-12 h-12 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
+                <div class="w-25 h-25 rounded-full bg-[#3d50ff]/10 flex items-center justify-center mb-3">
                     {{-- icono estrella --}}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                         class="w-6 h-6 text-[#3d50ff]" fill="currentColor">
+                         class="w-20 h-20  text-[#2128a6]" fill="currentColor">
                         <path
                             d="M12 2.5l2.9 5.88 6.1.89-4.4 4.3 1 6.03L12 17.5l-5.6 2.93 1-6.03-4.4-4.3 6.1-.89L12 2.5z" />
                     </svg>
                 </div>
-                <h4 class="font-semibold text-[#3d50ff]">Garantía</h4>
-                <p class="text-sm text-gray-600 mt-1">
+                <h4 class="font-semibold text-xl text-[#6F73BF]">Garantía</h4>
+                <p class="text-sm text-black mt-1">
                     3–12 meses según el producto.
                 </p>
             </div>
@@ -256,50 +256,58 @@
     </section>
 
     {{-- EXPLORAR MÁS --}}
-    <section class="bg-[#f4f6fb] py-16">
-        <div class="max-w-7xl mx-auto px-8">
+<section class="bg-[#f4f6fb] py-16">
 
-            <h3 class="text-lg font-semibold text-[#3d50ff] mb-4">
-                Explorar más
-            </h3>
+    <div class="max-w-7xl mx-auto px-8">
+        <h3 class="text-3xl text-[#2128A6] font-extrabold mb-8">
+            Explorar más
+        </h3>
+    </div>
 
-            <div
-                class="bg-white rounded-3xl shadow-md overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-0 items-center">
+    {{-- TARJETA A TODO EL ANCHO --}}
+    <div class="w-full">
+        <div class="bg-white rounded-3xl shadow-md overflow-hidden 
+                    grid grid-cols-1 md:grid-cols-2 gap-0 items-center w-full">
 
-                {{-- Imagen izquierda --}}
-                <div class="w-full h-full">
-                    <img src="/img/explorar-mas.png"
-                         alt="Explora más productos"
-                         class="w-full h-full object-cover">
-                </div>
+            {{-- Imagen izquierda --}}
+            <div class="w-full h-full">
+                <img src="/img/collagetienda.png"
+                     alt="Explora más productos"
+                     class="w-full h-full object-cover">
+            </div>
 
-                {{-- Texto derecha --}}
-                <div class="px-8 py-10 md:py-14 flex flex-col justify-center">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-[#3d50ff] leading-tight">
-                        Encuentra lo<br>
-                        que te inspira...
-                    </h2>
+            {{-- Texto derecha --}}
+            <div class="px-8 py-10 md:py-14 flex flex-col justify-center">
+                <h2 class="text-4xl md:text-6xl lg:text-7xl font-extrabold 
+                           text-[#6F73BF] leading-tight drop-shadow">
+                    Encuentra lo<br>
+                    que te inspira...
+                </h2>
 
-                    <p class="mt-4 text-gray-600 text-base md:text-lg max-w-md">
-                        Tecnología, hogar y más, todo en un solo lugar.
-                    </p>
+                <p class="font-bold text-[#2128A6] mt-4 text-2xl max-w-md">
+                    Tecnología, hogar y más, todo en un solo lugar.
+                </p>
 
-                    <button
-                        class="mt-7 inline-flex items-center justify-center bg-[#3d50ff] hover:bg-[#2936c7]
-                               text-white font-semibold px-8 py-3 rounded-full shadow-md transition">
-                        Ver productos
-                    </button>
-                </div>
-
+                <button
+    class="mt-6 inline-flex items-center justify-center 
+           bg-[#2128a6] hover:bg-[#6F73BF]
+           text-white text-lg font-semibold
+           px-6 py-2 rounded-full shadow-lg transition
+           w-fit">
+    Ver productos
+</button>
             </div>
 
         </div>
-    </section>
+    </div>
+
+</section>
+
 {{-- REVIEWS DE CLIENTES --}}
 <section class="bg-[#f4f6fb] py-16">
     <div class="max-w-7xl mx-auto px-8">
 
-        <h3 class="text-2xl font-bold text-gray-900 mb-2">
+        <h3 class="text-3xl text-[#2128A6] font-extrabold mb-8">
             Lo que dicen nuestros clientes
         </h3>
         <p class="text-sm text-gray-500 mb-8">
@@ -378,8 +386,4 @@
 
 
     </div>
-</section>
-
-
-</div>
-@endsection
+@endsection 

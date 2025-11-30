@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus</title>
 
-    {{-- YA NO USAMOS FONT AWESOME --}}
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-gray-900">
+<body class="bg-white text-gray-900 flex flex-col min-h-screen">
 
     {{-- NAVBAR --}}
-    <header class="w-full bg-white/70 backdrop-blur-xl border-b border-gray-200">
+    <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
 
             {{-- LOGO --}}
@@ -29,7 +27,7 @@
                 <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Ofertas
                 </a>
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('contact') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Contacto
                 </a>
             </nav>
@@ -84,7 +82,9 @@
         @yield('content')
     </main>
 
- <footer class="mt-20 py-12 bg-[#6f73bf] text-white">
+@hasSection('no_footer')
+  @else
+    <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
 
         {{-- CONTENEDOR EN DOS COLUMNAS --}}
@@ -156,7 +156,7 @@
 
     </div>
 </footer>
-
+@endif
 
 
 
