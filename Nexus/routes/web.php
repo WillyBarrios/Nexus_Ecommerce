@@ -2,10 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Página principal → siempre lleva al login primero
+// Portada Nexus directamente en "/"
 Route::get('/', function () {
-    return redirect('/login');
-});
+    return view('home');   // usa resources/views/home.blade.php
+})->name('home');
+
+// Login aparte
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
 // Login
 Route::get('/login', function () {
