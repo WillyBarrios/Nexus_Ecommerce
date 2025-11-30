@@ -60,3 +60,41 @@ Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
 
     Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
     ->name('account.profile.update');
+
+
+
+
+    // Olvidé contraseña → formulario de correo
+Route::get('/password', function () {
+    return view('password');
+})->name('password.reset');
+
+// Simulación: al enviar correo, redirige a cambiar contraseña
+Route::post('/password', function () {
+    // Aquí iría el envío real del correo, pero para prueba:
+    return redirect('/reset-password')->with('status', 'Te enviamos un 
+    enlace por correo');
+});
+
+// Cambiar contraseña
+Route::get('/reset-password', function () {
+    return view('reset-password');
+});
+
+// Guardar nueva contraseña (falso, solo para prueba)
+Route::post('/reset-password', function () {
+    return redirect('/login')->with('status', '¡Contraseña cambiada con éxito!');
+});
+
+
+
+
+// Registro - crea cuenta y LOGUEA AUTOMÁTICO
+Route::post('/register', function () {
+    // Aquí iría el código real de crear usuario en base de datos
+    // Pero para prueba rápida (login falso):
+
+    session(['logged_in' => true, 'nombre' => request('name')]);
+
+    return redirect('/home')->with('status', '¡Cuenta creada con éxito! Bienvenido');
+});
