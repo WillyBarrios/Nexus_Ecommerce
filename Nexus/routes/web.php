@@ -1,11 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
 
-// Página principal → siempre lleva al login primero
+// Portada Nexus directamente en "/"
 Route::get('/', function () {
-    return redirect('/login');
-});
+    return view('home');   // usa resources/views/home.blade.php
+})->name('home');
+
+// Login aparte
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
 // Login
 Route::get('/login', function () {
@@ -42,3 +48,15 @@ Route::post('/logout', function () {
     session()->flush();
     return redirect('/login');
 });
+
+// Página de contacto
+Route::get('/contacto', function () {
+    return view('contact');
+})->name('contact');
+
+//Perfil usuario
+Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
+    ->name('account.profile');
+
+    Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
+    ->name('account.profile.update');
