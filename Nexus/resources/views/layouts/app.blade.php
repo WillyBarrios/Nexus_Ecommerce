@@ -82,7 +82,8 @@
         @yield('content')
     </main>
 
-
+@hasSection('no_footer')
+  @else
     <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
 
@@ -155,7 +156,7 @@
 
     </div>
 </footer>
-
+@endif
 
 
 

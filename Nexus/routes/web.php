@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
 
 // Portada Nexus directamente en "/"
 Route::get('/', function () {
@@ -52,3 +53,10 @@ Route::post('/logout', function () {
 Route::get('/contacto', function () {
     return view('contact');
 })->name('contact');
+
+//Perfil usuario
+Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
+    ->name('account.profile');
+
+    Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
+    ->name('account.profile.update');
