@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Marca;
+use App\Services\MarcaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * Controlador Admin de Marcas
+ * Maneja las vistas del panel de administración
  */
 class MarcaAdminController extends Controller
 {
+    protected $marcaService;
+    
+    public function __construct(MarcaService $marcaService)
+    {
+        $this->marcaService = $marcaService;
+    }
+    
     /**
      * Listar todas las marcas
      */
     public function index()
     {
-        $marcas = Marca::withCount('productos')->paginate(15);
+        $marcas = $this->marcaService->listarMarcas(15);
         return view('admin.marcas.index', compact('marcas'));
     }
 
@@ -48,10 +56,14 @@ class MarcaAdminController extends Controller
                 ->withInput();
         }
 
-        Marca::create($request->all());
+        try {
+            $this->marcaService->crearMarca($request->only(['nombre_marca', 'descripcion']));
 
-        return redirect()->route('admin.marcas.index')
-            ->with('success', 'Marca creada exitosamente');
+            return redirect()->route('admin.marcas.index')
+                ->with('success', 'Marca creada exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -59,8 +71,13 @@ class MarcaAdminController extends Controller
      */
     public function edit($id)
     {
-        $marca = Marca::findOrFail($id);
-        return view('admin.marcas.edit', compact('marca'));
+        try {
+            $marca = $this->marcaService->obtenerMarca($id);
+            return view('admin.marcas.edit', compact('marca'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.marcas.index')
+                ->withErrors(['error' => 'Marca no encontrada']);
+        }
     }
 
     /**
@@ -68,8 +85,6 @@ class MarcaAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $marca = Marca::findOrFail($id);
-
         $validator = Validator::make($request->all(), [
             'nombre_marca' => 'required|string|max:150|unique:marcas,nombre_marca,' . $id . ',id_marca',
             'descripcion' => 'nullable|string|max:255'
@@ -84,10 +99,14 @@ class MarcaAdminController extends Controller
                 ->withInput();
         }
 
-        $marca->update($request->all());
+        try {
+            $this->marcaService->actualizarMarca($id, $request->only(['nombre_marca', 'descripcion']));
 
-        return redirect()->route('admin.marcas.index')
-            ->with('success', 'Marca actualizada exitosamente');
+            return redirect()->route('admin.marcas.index')
+                ->with('success', 'Marca actualizada exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -95,17 +114,14 @@ class MarcaAdminController extends Controller
      */
     public function destroy($id)
     {
-        $marca = Marca::findOrFail($id);
-        
-        // Verificar si tiene productos asociados
-        if ($marca->productos()->count() > 0) {
+        try {
+            $this->marcaService->eliminarMarca($id);
+
+            return redirect()->route('admin.marcas.index')
+                ->with('success', 'Marca eliminada exitosamente');
+        } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'No se puede eliminar la marca porque tiene productos asociados');
+                ->with('error', $e->getMessage());
         }
-
-        $marca->delete();
-
-        return redirect()->route('admin.marcas.index')
-            ->with('success', 'Marca eliminada exitosamente');
     }
 }

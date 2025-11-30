@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categoria;
+use App\Services\CategoriaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * Controlador Admin de Categorías
+ * Maneja las vistas del panel de administración
  */
 class CategoriaAdminController extends Controller
 {
+    protected $categoriaService;
+    
+    public function __construct(CategoriaService $categoriaService)
+    {
+        $this->categoriaService = $categoriaService;
+    }
+    
     /**
      * Listar todas las categorías
      */
     public function index()
     {
-        $categorias = Categoria::withCount('productos')->paginate(15);
+        $categorias = $this->categoriaService->listarCategorias(15);
         return view('admin.categorias.index', compact('categorias'));
     }
 
@@ -48,10 +56,14 @@ class CategoriaAdminController extends Controller
                 ->withInput();
         }
 
-        Categoria::create($request->all());
+        try {
+            $this->categoriaService->crearCategoria($request->only(['nombre_categoria', 'descripcion']));
 
-        return redirect()->route('admin.categorias.index')
-            ->with('success', 'Categoría creada exitosamente');
+            return redirect()->route('admin.categorias.index')
+                ->with('success', 'Categoría creada exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -59,8 +71,13 @@ class CategoriaAdminController extends Controller
      */
     public function edit($id)
     {
-        $categoria = Categoria::findOrFail($id);
-        return view('admin.categorias.edit', compact('categoria'));
+        try {
+            $categoria = $this->categoriaService->obtenerCategoria($id);
+            return view('admin.categorias.edit', compact('categoria'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.categorias.index')
+                ->withErrors(['error' => 'Categoría no encontrada']);
+        }
     }
 
     /**
@@ -68,8 +85,6 @@ class CategoriaAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categoria = Categoria::findOrFail($id);
-
         $validator = Validator::make($request->all(), [
             'nombre_categoria' => 'required|string|max:150|unique:categorias,nombre_categoria,' . $id . ',id_categoria',
             'descripcion' => 'nullable|string|max:255'
@@ -84,10 +99,14 @@ class CategoriaAdminController extends Controller
                 ->withInput();
         }
 
-        $categoria->update($request->all());
+        try {
+            $this->categoriaService->actualizarCategoria($id, $request->only(['nombre_categoria', 'descripcion']));
 
-        return redirect()->route('admin.categorias.index')
-            ->with('success', 'Categoría actualizada exitosamente');
+            return redirect()->route('admin.categorias.index')
+                ->with('success', 'Categoría actualizada exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -95,17 +114,14 @@ class CategoriaAdminController extends Controller
      */
     public function destroy($id)
     {
-        $categoria = Categoria::findOrFail($id);
-        
-        // Verificar si tiene productos asociados
-        if ($categoria->productos()->count() > 0) {
+        try {
+            $this->categoriaService->eliminarCategoria($id);
+
+            return redirect()->route('admin.categorias.index')
+                ->with('success', 'Categoría eliminada exitosamente');
+        } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'No se puede eliminar la categoría porque tiene productos asociados');
+                ->with('error', $e->getMessage());
         }
-
-        $categoria->delete();
-
-        return redirect()->route('admin.categorias.index')
-            ->with('success', 'Categoría eliminada exitosamente');
     }
 }

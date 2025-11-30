@@ -3,29 +3,30 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Services\UsuarioService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * Controlador Admin de Usuarios
+ * Maneja las vistas del panel de administración
  */
 class UsuarioAdminController extends Controller
 {
+    protected $usuarioService;
+    
+    public function __construct(UsuarioService $usuarioService)
+    {
+        $this->usuarioService = $usuarioService;
+    }
+    
     /**
      * Listar todos los usuarios
      */
     public function index(Request $request)
     {
-        $query = User::query();
-
-        // Filtro por rol
-        if ($request->has('rol') && $request->rol != '') {
-            $query->where('id_rol', $request->rol);
-        }
-
-        $usuarios = $query->orderBy('fecha_creacion', 'desc')->paginate(15);
+        $filtros = $request->only(['rol']);
+        $usuarios = $this->usuarioService->listarUsuarios($filtros);
         
         return view('admin.usuarios.index', compact('usuarios'));
     }
@@ -65,13 +66,14 @@ class UsuarioAdminController extends Controller
                 ->withInput();
         }
 
-        $data = $request->all();
-        $data['contrasena'] = Hash::make($request->contrasena);
+        try {
+            $this->usuarioService->crearUsuario($request->all());
 
-        User::create($data);
-
-        return redirect()->route('admin.usuarios.index')
-            ->with('success', 'Usuario creado exitosamente');
+            return redirect()->route('admin.usuarios.index')
+                ->with('success', 'Usuario creado exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -79,8 +81,13 @@ class UsuarioAdminController extends Controller
      */
     public function edit($id)
     {
-        $usuario = User::findOrFail($id);
-        return view('admin.usuarios.edit', compact('usuario'));
+        try {
+            $usuario = $this->usuarioService->obtenerUsuario($id);
+            return view('admin.usuarios.edit', compact('usuario'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.usuarios.index')
+                ->withErrors(['error' => 'Usuario no encontrado']);
+        }
     }
 
     /**
@@ -88,8 +95,6 @@ class UsuarioAdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $usuario = User::findOrFail($id);
-
         $validator = Validator::make($request->all(), [
             'nombre_completo' => 'required|string|max:150',
             'correo_electronico' => 'required|email|max:150|unique:usuarios,correo_electronico,' . $id . ',id_usuario',
@@ -111,17 +116,14 @@ class UsuarioAdminController extends Controller
                 ->withInput();
         }
 
-        $data = $request->except('contrasena');
-        
-        // Solo actualizar contraseña si se proporciona
-        if ($request->filled('contrasena')) {
-            $data['contrasena'] = Hash::make($request->contrasena);
+        try {
+            $this->usuarioService->actualizarUsuario($id, $request->all());
+
+            return redirect()->route('admin.usuarios.index')
+                ->with('success', 'Usuario actualizado exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $usuario->update($data);
-
-        return redirect()->route('admin.usuarios.index')
-            ->with('success', 'Usuario actualizado exitosamente');
     }
 
     /**
@@ -129,17 +131,15 @@ class UsuarioAdminController extends Controller
      */
     public function destroy($id)
     {
-        $usuario = User::findOrFail($id);
-        
-        // No permitir eliminar al usuario actual
-        if (auth()->check() && auth()->user()->id_usuario == $id) {
+        try {
+            $idUsuarioActual = auth()->check() ? auth()->user()->id_usuario : null;
+            $this->usuarioService->eliminarUsuario($id, $idUsuarioActual);
+
+            return redirect()->route('admin.usuarios.index')
+                ->with('success', 'Usuario eliminado exitosamente');
+        } catch (\Exception $e) {
             return redirect()->back()
-                ->with('error', 'No puedes eliminar tu propio usuario');
+                ->with('error', $e->getMessage());
         }
-
-        $usuario->delete();
-
-        return redirect()->route('admin.usuarios.index')
-            ->with('success', 'Usuario eliminado exitosamente');
     }
 }

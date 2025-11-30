@@ -3,40 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Producto;
 use App\Models\Categoria;
 use App\Models\Marca;
-use App\Models\MovimientoInventario;
+use App\Services\ProductoService;
 use Illuminate\Http\Request;
 
 /**
  * Controlador Admin de Productos
+ * Maneja las vistas del panel de administración
  */
 class ProductoAdminController extends Controller
 {
+    protected $productoService;
+    
+    public function __construct(ProductoService $productoService)
+    {
+        $this->productoService = $productoService;
+    }
+    
     /**
      * Listar productos
      */
     public function index(Request $request)
     {
-        $query = Producto::with(['categoria', 'marca']);
-        
-        // Búsqueda
-        if ($request->has('buscar')) {
-            $query->where('nombre_producto', 'like', '%' . $request->buscar . '%');
-        }
-        
-        // Filtro por categoría
-        if ($request->has('categoria')) {
-            $query->where('id_categoria', $request->categoria);
-        }
-        
-        // Filtro por estado
-        if ($request->has('estado')) {
-            $query->where('estado', $request->estado);
-        }
-        
-        $productos = $query->paginate(15);
+        $filtros = $request->only(['buscar', 'categoria', 'estado']);
+        $productos = $this->productoService->listarProductos($filtros, 15);
         $categorias = Categoria::all();
         
         return view('admin.productos.index', compact('productos', 'categorias'));
@@ -66,18 +57,14 @@ class ProductoAdminController extends Controller
             'id_marca' => 'required|exists:marcas,id_marca',
         ]);
         
-        $producto = Producto::create($request->all());
-        
-        // Registrar movimiento de inventario
-        MovimientoInventario::create([
-            'id_producto' => $producto->id_producto,
-            'tipo_movimiento' => 'entrada',
-            'cantidad' => $request->existencia,
-            'descripcion' => 'Stock inicial'
-        ]);
-        
-        return redirect()->route('admin.productos.index')
-                        ->with('success', 'Producto creado exitosamente');
+        try {
+            $this->productoService->crearProducto($request->all());
+            
+            return redirect()->route('admin.productos.index')
+                            ->with('success', 'Producto creado exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+        }
     }
     
     /**
@@ -85,11 +72,16 @@ class ProductoAdminController extends Controller
      */
     public function edit($id)
     {
-        $producto = Producto::findOrFail($id);
-        $categorias = Categoria::all();
-        $marcas = Marca::all();
-        
-        return view('admin.productos.edit', compact('producto', 'categorias', 'marcas'));
+        try {
+            $producto = $this->productoService->obtenerProducto($id);
+            $categorias = Categoria::all();
+            $marcas = Marca::all();
+            
+            return view('admin.productos.edit', compact('producto', 'categorias', 'marcas'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.productos.index')
+                            ->withErrors(['error' => 'Producto no encontrado']);
+        }
     }
     
     /**
@@ -105,24 +97,14 @@ class ProductoAdminController extends Controller
             'id_marca' => 'required|exists:marcas,id_marca',
         ]);
         
-        $producto = Producto::findOrFail($id);
-        $existenciaAnterior = $producto->existencia;
-        
-        $producto->update($request->all());
-        
-        // Si cambió la existencia, registrar movimiento
-        if ($request->existencia != $existenciaAnterior) {
-            $diferencia = $request->existencia - $existenciaAnterior;
-            MovimientoInventario::create([
-                'id_producto' => $producto->id_producto,
-                'tipo_movimiento' => $diferencia > 0 ? 'entrada' : 'salida',
-                'cantidad' => abs($diferencia),
-                'descripcion' => 'Ajuste manual de inventario'
-            ]);
+        try {
+            $this->productoService->actualizarProducto($id, $request->all());
+            
+            return redirect()->route('admin.productos.index')
+                            ->with('success', 'Producto actualizado exitosamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
-        
-        return redirect()->route('admin.productos.index')
-                        ->with('success', 'Producto actualizado exitosamente');
     }
     
     /**
@@ -130,10 +112,13 @@ class ProductoAdminController extends Controller
      */
     public function destroy($id)
     {
-        $producto = Producto::findOrFail($id);
-        $producto->update(['estado' => 'inactivo']);
-        
-        return redirect()->route('admin.productos.index')
-                        ->with('success', 'Producto eliminado exitosamente');
+        try {
+            $this->productoService->eliminarProducto($id);
+            
+            return redirect()->route('admin.productos.index')
+                            ->with('success', 'Producto eliminado exitosamente');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

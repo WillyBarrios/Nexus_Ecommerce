@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categoria;
+use App\Services\CategoriaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CategoriaController extends Controller
 {
+    protected $categoriaService;
+    
+    public function __construct(CategoriaService $categoriaService)
+    {
+        $this->categoriaService = $categoriaService;
+    }
+    
     /**
      * Listar todas las categorías
      * GET /api/categorias
      */
     public function index()
     {
-        $categorias = Categoria::withCount('productos')->get();
+        $categorias = $this->categoriaService->listarCategorias();
         
         return response()->json([
             'success' => true,
@@ -29,19 +36,19 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        $categoria = Categoria::withCount('productos')->find($id);
-        
-        if (!$categoria) {
+        try {
+            $categoria = $this->categoriaService->obtenerCategoria($id);
+            
+            return response()->json([
+                'success' => true,
+                'data' => $categoria
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Categoría no encontrada'
             ], 404);
         }
-        
-        return response()->json([
-            'success' => true,
-            'data' => $categoria
-        ]);
     }
     
     /**
@@ -66,7 +73,7 @@ class CategoriaController extends Controller
             ], 422);
         }
         
-        $categoria = Categoria::create($request->only(['nombre_categoria', 'descripcion']));
+        $categoria = $this->categoriaService->crearCategoria($request->only(['nombre_categoria', 'descripcion']));
         
         return response()->json([
             'success' => true,
@@ -81,15 +88,6 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categoria = Categoria::find($id);
-        
-        if (!$categoria) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Categoría no encontrada'
-            ], 404);
-        }
-        
         $validator = Validator::make($request->all(), [
             'nombre_categoria' => 'string|max:100|unique:categorias,nombre_categoria,' . $id . ',id_categoria',
             'descripcion' => 'nullable|string|max:255'
@@ -103,13 +101,20 @@ class CategoriaController extends Controller
             ], 422);
         }
         
-        $categoria->update($request->only(['nombre_categoria', 'descripcion']));
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Categoría actualizada exitosamente',
-            'data' => $categoria
-        ]);
+        try {
+            $categoria = $this->categoriaService->actualizarCategoria($id, $request->only(['nombre_categoria', 'descripcion']));
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría actualizada exitosamente',
+                'data' => $categoria
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Categoría no encontrada'
+            ], 404);
+        }
     }
     
     /**
@@ -118,29 +123,19 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        $categoria = Categoria::find($id);
-        
-        if (!$categoria) {
+        try {
+            $this->categoriaService->eliminarCategoria($id);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Categoría eliminada exitosamente'
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Categoría no encontrada'
-            ], 404);
-        }
-        
-        // Verificar si tiene productos asociados
-        if ($categoria->productos()->count() > 0) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se puede eliminar la categoría porque tiene productos asociados'
+                'message' => $e->getMessage()
             ], 400);
         }
-        
-        $categoria->delete();
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Categoría eliminada exitosamente'
-        ]);
     }
     
     /**
@@ -149,26 +144,18 @@ class CategoriaController extends Controller
      */
     public function productos($id)
     {
-        $categoria = Categoria::find($id);
-        
-        if (!$categoria) {
+        try {
+            $datos = $this->categoriaService->obtenerProductosCategoria($id);
+            
+            return response()->json([
+                'success' => true,
+                'data' => $datos
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Categoría no encontrada'
             ], 404);
         }
-        
-        $productos = $categoria->productos()
-                              ->with(['marca', 'imagenes'])
-                              ->where('estado', 'activo')
-                              ->get();
-        
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'categoria' => $categoria,
-                'productos' => $productos
-            ]
-        ]);
     }
 }

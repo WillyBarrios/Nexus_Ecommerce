@@ -3,43 +3,22 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Carrito;
-use App\Models\DetalleCarrito;
-use App\Models\Producto;
+use App\Services\CarritoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * Controlador del Carrito de Compras
  * 
- * Maneja todas las operaciones del carrito:
- * - Agregar productos
- * - Ver carrito
- * - Actualizar cantidades
- * - Eliminar productos
- * - Vaciar carrito
+ * Maneja las peticiones HTTP del carrito y delega la lógica al servicio
  */
 class CarritoController extends Controller
 {
-    /**
-     * Obtener o crear carrito del usuario autenticado
-     */
-    private function obtenerCarrito($usuario)
+    protected $carritoService;
+    
+    public function __construct(CarritoService $carritoService)
     {
-        // Buscar carrito abierto del usuario
-        $carrito = Carrito::where('id_usuario', $usuario->id_usuario)
-                         ->abierto()
-                         ->first();
-        
-        // Si no existe, crear uno nuevo
-        if (!$carrito) {
-            $carrito = Carrito::create([
-                'id_usuario' => $usuario->id_usuario,
-                'estado' => 'abierto'
-            ]);
-        }
-        
-        return $carrito;
+        $this->carritoService = $carritoService;
     }
     
     /**
@@ -48,8 +27,7 @@ class CarritoController extends Controller
      */
     public function index(Request $request)
     {
-        $carrito = $this->obtenerCarrito($request->user());
-        $carrito->load(['detalles.producto.imagenes']);
+        $carrito = $this->carritoService->obtenerCarritoConDetalles($request->user()->id_usuario);
         
         return response()->json([
             'success' => true,
@@ -87,66 +65,24 @@ class CarritoController extends Controller
             ], 422);
         }
         
-        // Verificar que el producto exista y esté activo
-        $producto = Producto::find($request->id_producto);
-        
-        if ($producto->estado !== 'activo') {
+        try {
+            $resultado = $this->carritoService->agregarProducto(
+                $request->user()->id_usuario,
+                $request->id_producto,
+                $request->cantidad
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => $resultado['mensaje'],
+                'data' => $resultado['carrito']
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'El producto no está disponible'
+                'message' => $e->getMessage()
             ], 400);
         }
-        
-        // Verificar stock disponible
-        if (!$producto->tieneStock($request->cantidad)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Stock insuficiente. Disponible: ' . $producto->existencia
-            ], 400);
-        }
-        
-        // Obtener o crear carrito
-        $carrito = $this->obtenerCarrito($request->user());
-        
-        // Verificar si el producto ya está en el carrito
-        $detalle = DetalleCarrito::where('id_carrito', $carrito->id_carrito)
-                                ->where('id_producto', $request->id_producto)
-                                ->first();
-        
-        if ($detalle) {
-            // Si ya existe, actualizar cantidad
-            $nuevaCantidad = $detalle->cantidad + $request->cantidad;
-            
-            // Verificar stock para la nueva cantidad
-            if (!$producto->tieneStock($nuevaCantidad)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Stock insuficiente. Ya tienes ' . $detalle->cantidad . ' en el carrito. Disponible: ' . $producto->existencia
-                ], 400);
-            }
-            
-            $detalle->update(['cantidad' => $nuevaCantidad]);
-            $mensaje = 'Cantidad actualizada en el carrito';
-        } else {
-            // Si no existe, crear nuevo detalle
-            $detalle = DetalleCarrito::create([
-                'id_carrito' => $carrito->id_carrito,
-                'id_producto' => $request->id_producto,
-                'cantidad' => $request->cantidad,
-                'precio_unitario' => $producto->precio,
-                'subtotal' => $producto->precio * $request->cantidad
-            ]);
-            $mensaje = 'Producto agregado al carrito';
-        }
-        
-        // Recargar carrito con relaciones
-        $carrito->load(['detalles.producto.imagenes']);
-        
-        return response()->json([
-            'success' => true,
-            'message' => $mensaje,
-            'data' => $carrito
-        ], 201);
     }
     
     /**
@@ -175,48 +111,26 @@ class CarritoController extends Controller
             ], 422);
         }
         
-        // Buscar detalle del carrito
-        $detalle = DetalleCarrito::find($id_detalle);
-        
-        if (!$detalle) {
+        try {
+            $carrito = $this->carritoService->actualizarCantidad(
+                $request->user()->id_usuario,
+                $id_detalle,
+                $request->cantidad
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Cantidad actualizada',
+                'data' => $carrito
+            ]);
+        } catch (\Exception $e) {
+            $statusCode = $e->getMessage() === 'No tienes permiso para modificar este item' ? 403 : 400;
+            
             return response()->json([
                 'success' => false,
-                'message' => 'Item no encontrado en el carrito'
-            ], 404);
+                'message' => $e->getMessage()
+            ], $statusCode);
         }
-        
-        // Verificar que el detalle pertenece al carrito del usuario
-        $carrito = $this->obtenerCarrito($request->user());
-        
-        if ($detalle->id_carrito !== $carrito->id_carrito) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No tienes permiso para modificar este item'
-            ], 403);
-        }
-        
-        // Verificar stock disponible
-        if (!$detalle->producto->tieneStock($request->cantidad)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Stock insuficiente. Disponible: ' . $detalle->producto->existencia
-            ], 400);
-        }
-        
-        // Actualizar cantidad y recalcular subtotal
-        $detalle->update([
-            'cantidad' => $request->cantidad,
-            'subtotal' => $detalle->precio_unitario * $request->cantidad
-        ]);
-        
-        // Recargar carrito
-        $carrito->load(['detalles.producto.imagenes']);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Cantidad actualizada',
-            'data' => $carrito
-        ]);
     }
     
     /**
@@ -225,35 +139,25 @@ class CarritoController extends Controller
      */
     public function eliminar(Request $request, $id_detalle)
     {
-        $detalle = DetalleCarrito::find($id_detalle);
-        
-        if (!$detalle) {
+        try {
+            $carrito = $this->carritoService->eliminarProducto(
+                $request->user()->id_usuario,
+                $id_detalle
+            );
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Producto eliminado del carrito',
+                'data' => $carrito
+            ]);
+        } catch (\Exception $e) {
+            $statusCode = $e->getMessage() === 'No tienes permiso para eliminar este item' ? 403 : 400;
+            
             return response()->json([
                 'success' => false,
-                'message' => 'Item no encontrado en el carrito'
-            ], 404);
+                'message' => $e->getMessage()
+            ], $statusCode);
         }
-        
-        // Verificar que el detalle pertenece al carrito del usuario
-        $carrito = $this->obtenerCarrito($request->user());
-        
-        if ($detalle->id_carrito !== $carrito->id_carrito) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No tienes permiso para eliminar este item'
-            ], 403);
-        }
-        
-        $detalle->delete();
-        
-        // Recargar carrito
-        $carrito->load(['detalles.producto.imagenes']);
-        
-        return response()->json([
-            'success' => true,
-            'message' => 'Producto eliminado del carrito',
-            'data' => $carrito
-        ]);
     }
     
     /**
@@ -262,8 +166,7 @@ class CarritoController extends Controller
      */
     public function vaciar(Request $request)
     {
-        $carrito = $this->obtenerCarrito($request->user());
-        $carrito->vaciar();
+        $carrito = $this->carritoService->vaciarCarrito($request->user()->id_usuario);
         
         return response()->json([
             'success' => true,
