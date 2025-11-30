@@ -6,9 +6,14 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function home()
+    /**
+     * Muestra la página de inicio.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
     {
-        // Aquí pones la vista que quieres mostrar en la página principal
-        return view('home');
+        // Aquí se cargarán los datos para la página de inicio
+        return view('client.home');
     }
 }
