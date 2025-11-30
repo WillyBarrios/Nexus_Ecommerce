@@ -27,7 +27,7 @@
                 <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Ofertas
                 </a>
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('contact') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Contacto
                 </a>
             </nav>

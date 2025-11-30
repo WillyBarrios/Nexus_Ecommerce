@@ -47,3 +47,8 @@ Route::post('/logout', function () {
     session()->flush();
     return redirect('/login');
 });
+
+// Página de contacto
+Route::get('/contacto', function () {
+    return view('contact');
+})->name('contact');
