@@ -1,28 +1,44 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\AdminController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Aquí es donde puedes registrar rutas web para tu aplicación. Estas
-| rutas son cargadas por el RouteServiceProvider y todas ellas serán
-| asignadas al grupo de middleware "web". ¡Haz algo genial!
-|
-*/
+// Página principal → siempre lleva al login primero
+Route::get('/', function () {
+    return redirect('/login');
+});
 
-// Ruta principal para la página de inicio del cliente
-Route::get('/', [ClientController::class, 'home'])->name('client.home');
+// Login
+Route::get('/login', function () {
+    return view('login');
+})->name('login');
 
-// Rutas para el panel de administración
-Route::prefix('admin')->name('admin.')->group(function () {
-    // Ruta para el dashboard de administración
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::post('/login', function () {
+    // Login falso para prueba
+    session(['logged_in' => true]);
+    return redirect('/home');
+});
 
-    // Ruta para la página de perfil de administración
-    Route::get('/profile', [AdminController::class, 'profile'])->name('profile');
+//ruta para olvide mi contrasena
+Route::get('/password', function () {
+    return view('password');
+});
+
+//ruta para creacion de usuario
+Route::get('/register', function () {
+    return view('register');
+});
+
+
+// 3. Home (protegido)
+Route::get('/home', function () {
+    if (!session('logged_in')) {
+        return redirect('/login');
+    }
+    return view('home');
+})->name('home');
+
+//. Logout
+Route::post('/logout', function () {
+    session()->flush();
+    return redirect('/login');
 });
