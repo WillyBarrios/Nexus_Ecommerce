@@ -9,45 +9,125 @@
 </head>
 <body class="min-h-screen bg-[#F2F2F2] flex items-center justify-center px-4">
 
-    <div class="w-full max-w-md">
-        <div class="text-center mb-10">
-            <img src="{{ asset('img/logo-nexus.png') }}" alt="Logo" class="h-16 mx-auto">
+    <!-- LOGIN -->
+    <div class="w-full max-w-xs"> 
+
+        <div class="text-center my-3">
+            <img src="{{ asset('img/logo-nexus.png') }}" alt="Logo" class="h-8 mx-auto">
         </div>
 
-        <div class="bg-white p-12 rounded-3xl shadow-2xl">
-            <h1 class="text-3xl font-bold text-center text-[#2128A5] mb-8">
-                Crear Cuenta
+        <div class="bg-white p-5 rounded-2xl shadow-2xl">
+
+            <h1 class="text-xl font-bold text-center text-[#2128A5] mb-2">
+                Crear una Cuenta
             </h1>
 
-            <form method="POST" action="/register" class="space-y-6">
+            <p class="text-center text-xs text-[#7072BF] mb-4">
+                Si eres nuevo en nuestra tienda nos alegra tenerte como miembro.
+            </p>
+
+            <form method="POST" action="/register" class="space-y-3">  
+
                 @csrf
 
-                <input type="text" name="name" required placeholder="Nombre completo"
-                       class="w-full px-5 py-3 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2]">
+                <!-- PRIMER NOMBRE -->
+                <div class="text-center">
+                    <label class="px-5 block text-[#7072BF] font-semibold text-left text-xs">
+                        Primer Nombre : *
+                    </label>
+                    <input type="text" name="name" required placeholder="Felipe"
+                           class="w-full max-w-xs px-6 py-1.5 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2] focus:ring-2 focus:ring-blue-300 text-sm">
+                </div>
 
-                <input type="email" name="email" required placeholder="Correo electrónico"
-                       class="w-full px-5 py-3 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2]">
+                <!-- APELLIDO -->
+                <div class="text-center">
+                    <label class="px-5 block text-[#7072BF] font-semibold text-left text-xs">
+                        Apellido : *
+                    </label>
+                    <input type="text" name="apellido" required placeholder="Esquivel"
+                           class="w-full max-w-xs px-6 py-1.5 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2] focus:ring-2 focus:ring-blue-300 text-sm">
+                </div>
 
-                <input type="password" name="password" required placeholder="Contraseña"
-                       class="w-full px-5 py-3 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2]">
+                <!-- CORREO -->
+                <div class="text-center">
+                    <label class="px-5 block text-[#7072BF] font-semibold text-left text-xs">
+                        Correo Electronico : *
+                    </label>
+                    <input type="email" name="email" required placeholder="tucorreo@example.com"
+                           class="w-full max-w-xs px-6 py-1.5 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2] focus:ring-2 focus:ring-blue-300 text-sm">
+                </div>
 
-                <input type="password" name="password_confirmation" required placeholder="Confirmar contraseña"
-                       class="w-full px-5 py-3 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2]">
+                <!-- CONTRASEÑA + OJITO -->
+                <div class="text-center relative">
+                    <label class="px-5 block text-[#7072BF] font-semibold text-left text-xs">
+                        Contraseña : *
+                    </label>
+                    <input type="password" id="password" name="password" required placeholder=""
+                           class="w-full max-w-xs px-6 py-1.5 pr-10 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2] focus:ring-2 focus:ring-blue-300 text-sm">
+                    <button type="button" onclick="togglePassword('password', 'eye1')"
+                            class="absolute right-4 top-5 text-gray-600 hover:text-gray-800">
+                        <i id="eye1" class="fa-solid fa-eye text-sm"></i>
+                    </button>
+                </div>
 
-                <button type="submit"
-                        class="w-full bg-[#2128A5] hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg">
-                    Crear mi cuenta
-                </button>
+                <!-- CONFIRMAR CONTRASEÑA + OJITO -->
+                <div class="text-center relative">
+                    <label class="px-5 block text-[#7072BF] font-semibold text-left text-xs">
+                        Confirmar Contraseña : *
+                    </label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" required placeholder=""
+                           class="w-full max-w-xs px-6 py-1.5 pr-10 border-2 border-[#2128A5] rounded-xl bg-[#f2f2f2] focus:ring-2 focus:ring-blue-300 text-sm">
+                    <button type="button" onclick="togglePassword('password_confirmation', 'eye2')"
+                            class="absolute right-4 top-5 text-gray-600 hover:text-gray-800">
+                        <i id="eye2" class="fa-solid fa-eye text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- CHECKBOX -->
+                <div class="flex items-center justify-center mt-3">
+                    <label class="flex items-center cursor-pointer text-xs text-[#7072BF]">
+                        <input type="checkbox" class="hidden peer" required>
+                        <div class="w-4 h-4 border-2 border-[#2128A5] rounded mr-2 peer-checked:bg-[#2128A5] transition flex items-center justify-center">
+                            <svg class="w-3 h-3 text-white hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        Acepto los terminos y condiciones. Haga click aqui
+                    </label>
+                </div>
+
+                <!-- BOTÓN -->
+                <div class="text-center mt-4">
+                    <button type="submit"
+                            class="bg-[#2128A5] hover:bg-blue-700 text-white font-bold py-2 px-14 rounded-xl text-base transition">
+                        Registrar
+                    </button>
+                </div>
             </form>
 
-            <p class="text-center text-sm text-[#7072BF] mt-6">
-                <a href="/login" class="underline hover:text-[#2128A5]">← Ya tengo cuenta</a>
+            <p class="text-left text-xs text-[#7072BF] mt-4">
+                <a href="/login" class="no-underline hover:text-[#2128A5]">Ya tienes cuenta? Iniciar Sesion</a>
             </p>
         </div>
 
-        <p class="text-center text-xs text-[#7072BF] mt-10">
+        <p class="text-left text-xs text-[#7072BF] mt-2">
             Powered by Nexus © 2025
         </p>
     </div>
+
+    <!-- SCRIPT PARA LOS DOS OJITOS -->
+    <script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+    </script>
 </body>
 </html>
