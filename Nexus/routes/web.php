@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
+
+// --- RUTA PARA EL PANEL DE ADMINISTRADOR ---
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 // Portada Nexus directamente en "/"
 Route::get('/', function () {
