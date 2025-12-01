@@ -98,3 +98,7 @@ Route::post('/register', function () {
 
     return redirect('/home')->with('status', '¡Cuenta creada con éxito! Bienvenido');
 });
+
+Route::get('/categorias', function () {
+    return view('categories');
+})->name('categories');

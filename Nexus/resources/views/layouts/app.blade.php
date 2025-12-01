@@ -21,7 +21,7 @@
 
             {{-- MENÚ --}}
             <nav class="hidden md:flex gap-12">
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('categories') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Categorías
                 </a>
                 <a href="{{ route('offers') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
