@@ -60,3 +60,8 @@ Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
 
     Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
     ->name('account.profile.update');
+
+//Ofertas del día
+Route::get('/ofertas', function () {
+    return view('offers');
+})->name('offers');

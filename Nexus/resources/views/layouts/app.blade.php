@@ -24,7 +24,7 @@
                 <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Categorías
                 </a>
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('offers') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Ofertas
                 </a>
                 <a href="{{ route('contact') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
@@ -101,7 +101,7 @@
                 {{-- MENÚ --}}
                 <nav class="flex gap-10 text-white text-lg font-semibold">
                     <a href="#" class="hover:text-gray-200 transition">Categorias</a>
-                    <a href="#" class="hover:text-gray-200 transition">Ofertas</a>
+                    <a href="{{ route('offers') }}" class="hover:text-gray-200 transition">Ofertas</a>
                     <a href="#" class="hover:text-gray-200 transition">Contacto</a>
                 </nav>
 
