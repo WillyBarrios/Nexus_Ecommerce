@@ -114,6 +114,18 @@ Route::post('/register', function () {
     return redirect('/home')->with('status', '¡Cuenta creada con éxito! Bienvenido');
 });
 
+
 Route::get('/categorias', function () {
     return view('categories');
 })->name('categories');
+
+
+Route::get('/categorias/{slug}', function ($slug) {
+
+    // Aquí puedes cargar productos según la categoría
+    return view('category-page', [
+        'slug' => $slug
+    ]);
+
+})->name('category.show');
+
