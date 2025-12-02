@@ -63,7 +63,7 @@
                 </div>
 
                 {{-- ICONO USUARIO (SVG) --}}
-                <a href="{{ route('admin.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
+                <a href="{{ route('account.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          viewBox="0 0 24 24" 
                          class="w-6 h-6">
