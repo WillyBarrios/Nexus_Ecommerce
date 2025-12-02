@@ -122,9 +122,27 @@ Route::get('/categorias', function () {
 
 Route::get('/categorias/{slug}', function ($slug) {
 
-    // Aquí puedes cargar productos según la categoría
+    // Simulando productos por categoría
+    $products = [
+
+        'tecnologia' => [
+            ['name' => 'Laptop HP', 'price' => 3500, 'img' => '/img/laptophp.jpg'],
+            ['name' => 'Audífonos Sony', 'price' => 499, 'img' => '/img/audifonossony.jpg'],
+        ],
+
+        'ropa' => [
+            ['name' => 'Camisa Casual', 'price' => 129, 'img' => '/img/camisa.jpg'],
+            ['name' => 'Pantalón Jeans', 'price' => 199, 'img' => '/img/jeans.jpg'],
+        ],
+
+        'oficina' => [
+            ['name' => 'Silla ergonómica', 'price' => 899, 'img' => '/img/silla.jpg'],
+        ],
+    ];
+
     return view('category-page', [
-        'slug' => $slug
+        'slug' => $slug,
+        'products' => $products[$slug] ?? []  // Si no existe la categoría → vacío
     ]);
 
 })->name('category.show');
