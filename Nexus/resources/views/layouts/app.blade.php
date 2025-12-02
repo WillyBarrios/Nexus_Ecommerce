@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus</title>
 
-    {{-- YA NO USAMOS FONT AWESOME --}}
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white text-gray-900">
+<body class="bg-white text-gray-900 flex flex-col min-h-screen">
 
     {{-- NAVBAR --}}
-    <header class="w-full bg-white/70 backdrop-blur-xl border-b border-gray-200">
+    <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
 
             {{-- LOGO --}}
@@ -23,13 +21,13 @@
 
             {{-- MENÚ --}}
             <nav class="hidden md:flex gap-12">
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('categories') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Categorías
                 </a>
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('offers') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Ofertas
                 </a>
-                <a href="#" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
+                <a href="{{ route('contact') }}" class="text-[#1d2ea3] text-lg font-medium hover:text-[#3d50ff] transition">
                     Contacto
                 </a>
             </nav>
@@ -56,14 +54,14 @@
                 </div>
 
                 {{-- ICONO USUARIO (SVG) --}}
-                <button class="text-[#1d2ea3] hover:text-[#3d50ff]">
+                <a href="{{ route('admin.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          viewBox="0 0 24 24" 
                          class="w-6 h-6">
                         <path fill="currentColor"
                               d="M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Zm0 2c-3.33 0-6 1.34-6 3v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1c0-1.66-2.67-3-6-3Z" />
                     </svg>
-                </button>
+                </a>
 
                 {{-- ICONO CARRITO (SVG) --}}
                 <button class="text-[#1d2ea3] hover:text-[#3d50ff]">
@@ -84,7 +82,9 @@
         @yield('content')
     </main>
 
- <footer class="mt-20 py-12 bg-[#6f73bf] text-white">
+@hasSection('no_footer')
+  @else
+    <footer class="mt-0 py-12 bg-[#6f73bf] text-white">
     <div class="max-w-7xl mx-auto px-8">
 
         {{-- CONTENEDOR EN DOS COLUMNAS --}}
@@ -101,7 +101,7 @@
                 {{-- MENÚ --}}
                 <nav class="flex gap-10 text-white text-lg font-semibold">
                     <a href="#" class="hover:text-gray-200 transition">Categorias</a>
-                    <a href="#" class="hover:text-gray-200 transition">Ofertas</a>
+                    <a href="{{ route('offers') }}" class="hover:text-gray-200 transition">Ofertas</a>
                     <a href="#" class="hover:text-gray-200 transition">Contacto</a>
                 </nav>
 
@@ -156,7 +156,7 @@
 
     </div>
 </footer>
-
+@endif
 
 
 
