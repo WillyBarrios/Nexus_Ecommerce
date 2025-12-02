@@ -68,6 +68,13 @@ Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
 Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
     ->name('account.profile.update');
 
+// Dirección usuario
+Route::get('/mi-cuenta/direccion', [AccountController::class, 'address'])
+    ->name('account.address');
+
+Route::post('/mi-cuenta/direccion', [AccountController::class, 'updateAddress'])
+    ->name('account.address.update');
+
 // Ofertas del día (TU RUTA)
 Route::get('/ofertas', function () {
     return view('offers');

@@ -25,9 +25,31 @@ class AccountController extends Controller
             'email'         => 'required|email',
         ]);
 
-        // Más adelante aquí:
+        // Aquí:
         // auth()->user()->update([...]);
 
         return back()->with('status', 'Perfil actualizado (modo demo, sin guardar en BD).');
     }
+    public function address()
+{
+    // Aquí se cargará la dirección real del usuario
+    return view('account.address');
 }
+
+public function updateAddress(Request $request)
+{
+    $request->validate([
+        'street'      => 'required|string|max:255',
+        'number'      => 'nullable|string|max:50',
+        'city'        => 'required|string|max:255',
+        'department'  => 'required|string|max:255',
+        'postal_code' => 'nullable|string|max:20',
+        'reference'   => 'nullable|string|max:500',
+    ]);
+
+    // Aquí se coloca: auth()->user()->address()->updateOrCreate([...])
+
+    return back()->with('status', 'Dirección actualizada (modo demo, sin guardar en BD).');
+}
+}
+
