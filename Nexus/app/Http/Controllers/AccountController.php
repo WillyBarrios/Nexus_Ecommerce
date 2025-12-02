@@ -51,5 +51,32 @@ public function updateAddress(Request $request)
 
     return back()->with('status', 'Dirección actualizada (modo demo, sin guardar en BD).');
 }
+
+public function orders()
+    {
+        // Datos de ejemplo 
+        $orders = [
+            [
+                'code'   => 'NX-10234',
+                'date'   => '24/10/2025',
+                'status' => 'Completada',
+                'total'  => 'Q 950.00',
+            ],
+            [
+                'code'   => 'NX-10235',
+                'date'   => '10/11/2025',
+                'status' => 'En proceso',
+                'total'  => 'Q 1,800.00',
+            ],
+            [
+                'code'   => 'NX-10236',
+                'date'   => '15/11/2025',
+                'status' => 'Cancelada',
+                'total'  => 'Q 420.00',
+            ],
+        ];
+
+        return view('account.orders', compact('orders'));
+    }
 }
 
