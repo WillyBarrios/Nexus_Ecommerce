@@ -42,7 +42,7 @@
                     <span class="text-xs">&gt;</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('account.orders') }}"
                    class="flex items-center justify-between px-7 py-3.5 text-gray-600 hover:bg-gray-50">
                     <span>Órdenes</span>
                     <span class="text-xs text-gray-400">&gt;</span>
