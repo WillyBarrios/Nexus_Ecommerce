@@ -56,4 +56,31 @@ class AdminController extends Controller
         // La vista `admin.index` recibirá una variable `$products` que podrá utilizar.
         return view('admin.index', ['products' => $products]);
     }
+
+    /**
+     * Muestra la página de perfil del administrador.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function profile()
+    {
+        // TODO: Obtener los datos del usuario autenticado
+        $admin = (object)[
+            'name' => 'Admin Nexus',
+            'email' => 'admin@nexus.com'
+        ];
+        return view('admin.profile', ['admin' => $admin]);
+    }
+
+    /**
+     * Actualiza el perfil del administrador.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProfile(Request $request)
+    {
+        // TODO: Implementar la lógica de validación y actualización
+        return back()->with('success', 'Perfil actualizado correctamente.');
+    }
 }

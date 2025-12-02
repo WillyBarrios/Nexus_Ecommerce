@@ -144,29 +144,49 @@
             | las imágenes de los productos comprados.
             |
             --}}
-            <div class="border-t pt-4 mt-4 flex items-center justify-between">
-                <div class="flex items-center space-x-6">
-                    <div>
+            <div class="border-t pt-4 mt-4 flex items-start justify-between">
+                {{--
+                |------------------------------------------------------------------
+                | Contenedor Principal de la Transacción
+                |------------------------------------------------------------------
+                |
+                | Se utiliza un layout flexbox que se ajusta (`flex-wrap`) en
+                | pantallas pequeñas y se expande en pantallas medianas y grandes.
+                | El `gap-x-8` y `gap-y-4` proporcionan un espaciado consistente
+                | y responsivo entre los elementos.
+                |
+                --}}
+                <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+                    {{-- Columna 1: Detalles de la Orden --}}
+                    <div class="flex-shrink-0">
                         <p class="font-bold text-gray-800">#53</p>
                         <p class="text-gray-500 text-sm">14 nov 2025, 16:52:36</p>
                         <span class="inline-block mt-1 px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Completado</span>
                     </div>
-                    <div>
-                        <p class="text-gray-800">Transferencia de dinero</p>
+
+                    {{-- Columna 2: Método de Pago --}}
+                    <div class="flex-shrink-0">
+                        <p class="font-semibold text-gray-700">Transferencia de dinero</p>
                         <p class="text-gray-500 text-sm">Predeterminado</p>
                     </div>
-                    <div>
+
+                    {{-- Columna 3: Detalles del Cliente --}}
+                    <div class="flex-shrink-0">
                         <p class="font-bold text-gray-800">Jimmy Doe</p>
                         <p class="text-gray-500 text-sm">john@example.com</p>
                         <p class="text-gray-500 text-sm">Ciudad de guatemala</p>
                     </div>
-                    <div class="flex space-x-2">
-                        <div class="w-10 h-10 bg-gray-200 rounded-md"></div>
-                        <div class="w-10 h-10 bg-gray-200 rounded-md"></div>
+
+                    {{-- Columna 4: Imágenes de Productos --}}
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gray-200 rounded-md shadow-sm"></div>
+                        <div class="w-10 h-10 bg-gray-200 rounded-md shadow-sm"></div>
                     </div>
                 </div>
-                <div>
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3b.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+
+                {{-- Icono de flecha a la derecha --}}
+                <div class="self-center">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </div>
             </div>
         </div>
