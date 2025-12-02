@@ -54,14 +54,14 @@
                 </div>
 
                 {{-- ICONO USUARIO (SVG) --}}
-                <button class="text-[#1d2ea3] hover:text-[#3d50ff]">
+                <a href="{{ route('admin.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          viewBox="0 0 24 24" 
                          class="w-6 h-6">
                         <path fill="currentColor"
                               d="M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Zm0 2c-3.33 0-6 1.34-6 3v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1c0-1.66-2.67-3-6-3Z" />
                     </svg>
-                </button>
+                </a>
 
                 {{-- ICONO CARRITO (SVG) --}}
                 <button class="text-[#1d2ea3] hover:text-[#3d50ff]">
