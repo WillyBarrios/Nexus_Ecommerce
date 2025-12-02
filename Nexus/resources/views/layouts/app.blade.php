@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus</title>
 
+    <!-- ÍCONOS PHOSPHOR (v2, regular) -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css"
+    />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
+
 
 <body class="bg-white text-gray-900 flex flex-col min-h-screen">
 
