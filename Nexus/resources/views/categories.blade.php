@@ -14,20 +14,19 @@
 
         @php
             $categories = [
-                ['name' => 'Mujer',      'emoji' => '👩‍🦰'],
+               
                 ['name' => 'Belleza',    'emoji' => '💄'],
-                ['name' => 'Hombre',     'emoji' => '👔'],
+               
                 ['name' => 'Oficina',    'emoji' => '🏢'],
 
                 ['name' => 'Hogar',      'emoji' => '🏠'],
                 ['name' => 'Niños',      'emoji' => '🧸'],
                 ['name' => 'Deportes',   'emoji' => '🏀'],
-                ['name' => 'Joyería',    'emoji' => '💍'],
+                
 
                 ['name' => 'Juguetes',   'emoji' => '🎮'],
                 ['name' => 'Tecnología', 'emoji' => '💻'],
-                ['name' => 'Industrial', 'emoji' => '🏭'],
-                ['name' => 'Motos', 'emoji' => '🏍️'],
+                ['name' => 'Ropa',      'emoji' => '👗'],
             ];
         @endphp
 
