@@ -2,6 +2,27 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use Illuminate\Support\Facades\DB;
+
+//Pruebas de conexion a la base de datos
+Route::get('/prueba-db', function () {
+    try {
+        $r1 = DB::connection()->select('SELECT 1 as ok');
+    } catch (\Throwable $e) {
+        $r1 = ['error' => $e->getMessage()];
+    }
+
+    try {
+        $r2 = DB::connection('nexus_read')->select('SELECT 1 as ok');
+    } catch (\Throwable $e) {
+        $r2 = ['error' => $e->getMessage()];
+    }
+
+    return response()->json([
+        'default_connection' => $r1,
+        'nexus_read_connection' => $r2,
+    ]);
+});
 
 // Portada Nexus directamente en "/"
 Route::get('/', function () {
@@ -60,3 +81,4 @@ Route::get('/mi-cuenta/perfil', [AccountController::class, 'profile'])
 
     Route::post('/mi-cuenta/perfil', [AccountController::class, 'updateProfile'])
     ->name('account.profile.update');
+    
