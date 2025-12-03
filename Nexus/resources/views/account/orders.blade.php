@@ -49,7 +49,7 @@
                 </a>
 
                 {{-- Reseñas --}}
-                <a href="#"
+                 <a href="{{ route('account.reviews') }}"
                    class="flex items-center justify-between px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-50">
                     <span>Reseñas</span>
                     <span class="text-xs text-gray-400">&gt;</span>

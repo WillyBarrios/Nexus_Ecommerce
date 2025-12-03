@@ -78,5 +78,35 @@ public function orders()
 
         return view('account.orders', compact('orders'));
     }
+
+    public function reviews()
+{
+    // Datos de ejemplo de reseñas
+    $reviews = [
+        [
+            'product' => 'Tab K10 Lenovo',
+            'date'    => '24/10/2025',
+            'rating'  => 5,
+            'comment' => 'Excelente tablet, rápida y con pantalla muy nítida.',
+            'status'  => 'Publicado',
+        ],
+        [
+            'product' => 'Audífonos JBL Tune 760NC',
+            'date'    => '10/11/2025',
+            'rating'  => 4,
+            'comment' => 'Muy buen sonido y batería, un poco grandes para mi gusto.',
+            'status'  => 'Publicado',
+        ],
+        [
+            'product' => 'Bailarina efecto terciopelo',
+            'date'    => '15/11/2025',
+            'rating'  => 3,
+            'comment' => 'Bonitas, pero la talla viene un poco reducida.',
+            'status'  => 'Pendiente',
+        ],
+    ];
+
+    return view('account.reviews', compact('reviews'));
+}
 }
 
