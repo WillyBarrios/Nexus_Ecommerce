@@ -56,7 +56,7 @@
                 </a>
 
                 {{-- Favoritos --}}
-                <a href="#"
+                <a href="{{ route('account.favorites') }}"
                    class="flex items-center justify-between px-6 py-3 border-l-4 border-transparent text-gray-600 hover:bg-gray-50">
                     <span>Favoritos</span>
                     <span class="text-xs text-gray-400">&gt;</span>

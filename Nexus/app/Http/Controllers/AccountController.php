@@ -108,5 +108,36 @@ public function orders()
 
     return view('account.reviews', compact('reviews'));
 }
+
+public function favorites()
+{
+    // Datos dde ejemplo para los favoritos
+    $favorites = [
+        [
+            'name'      => 'Tab K10 Lenovo',
+            'category'  => 'Tecnología',
+            'price'     => 'Q 1,800.00',
+            'image'     => '/img/tabk10.jpg',
+            'added_at'  => '20/11/2025',
+        ],
+        [
+            'name'      => 'Audífonos JBL Tune 760NC',
+            'category'  => 'Audio',
+            'price'     => 'Q 950.00',
+            'image'     => '/img/audifonos.jpg',
+            'added_at'  => '05/11/2025',
+        ],
+        [
+            'name'      => 'Boss Bottled 100ml',
+            'category'  => 'Perfumes',
+            'price'     => 'Q 1,500.00',
+            'image'     => '/img/perfumehugoboss.jpg',
+            'added_at'  => '12/11/2025',
+        ],
+    ];
+
+    return view('account.favorites', compact('favorites'));
+}
+
 }
 

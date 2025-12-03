@@ -85,7 +85,11 @@ Route::get('/mi-cuenta/ordenes', [AccountController::class, 'orders'])
 //reseñas de usuario
 Route::get('/mi-cuenta/resenas', [AccountController::class, 'reviews'])->name('account.reviews');
 
-// Ofertas del día (TU RUTA)
+//Favoritos de usuario
+Route::get('/mi-cuenta/favoritos', [AccountController::class, 'favorites'])
+    ->name('account.favorites');
+
+// Ofertas del día 
 Route::get('/ofertas', function () {
     return view('offers');
 })->name('offers');

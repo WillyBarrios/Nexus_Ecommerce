@@ -54,7 +54,7 @@
                     <span class="text-xs text-gray-400">&gt;</span>
                 </a>
 
-                <a href="#"
+                <a href="{{ route('account.favorites') }}"
                    class="flex items-center justify-between px-7 py-3.5 text-gray-600 hover:bg-gray-50">
                     <span>Favoritos</span>
                     <span class="text-xs text-gray-400">&gt;</span>
