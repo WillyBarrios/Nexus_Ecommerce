@@ -109,9 +109,9 @@
 
                 {{-- MENÚ --}}
                 <nav class="flex gap-10 text-white text-lg font-semibold">
-                    <a href="#" class="hover:text-gray-200 transition">Categorias</a>
+                    <a href="{{ route('categories') }}" class="hover:text-gray-200 transition">Categorias</a>
                     <a href="{{ route('offers') }}" class="hover:text-gray-200 transition">Ofertas</a>
-                    <a href="#" class="hover:text-gray-200 transition">Contacto</a>
+                    <a href="{{ route('contact') }}" class="hover:text-gray-200 transition">Contacto</a>
                 </nav>
 
                 {{-- ICONOS REDES SOCIALES --}}

@@ -23,14 +23,13 @@
                     Productos seleccionados para  <br> tu estilo de vida.
                 </p>
 <div class="flex flex-col justify-center max-w-md">
-             <button
-    class="mt-6 inline-flex items-center justify-center 
-           bg-[#30D9C8] hover:bg-[#77D9CF]
-           text-white text-2xl font-semibold
-           px-6 py-2 rounded-full shadow-lg transition
-          ">
+             <a href="{{ route('categories') }}"
+   class="mt-6 inline-flex items-center justify-center 
+          bg-[#30D9C8] hover:bg-[#77D9CF]
+          text-white text-2xl font-semibold
+          px-6 py-2 rounded-full shadow-lg transition">
     Comprar ahora
-</button>
+</a>
 </div>
 
             </div>
@@ -189,10 +188,10 @@
 
         {{-- BOTÓN VER TODO --}}
         <div class="text-center mt-12">
-            <button
+            <a href="{{ route('categories') }}"
                 class="inline-flex items-center justify-center bg-[#2128a6] text-white font-semibold px-20 py-3 rounded-full shadow-md transition">
                 Ver todo lo nuevo
-            </button>
+        </a>
         </div>
 
     </div>
@@ -288,14 +287,14 @@
                     Tecnología, hogar y más, todo en un solo lugar.
                 </p>
 
-                <button
+                <a href="{{ route('categories') }}"
     class="mt-6 inline-flex items-center justify-center 
            bg-[#2128a6] hover:bg-[#6F73BF]
            text-white text-lg font-semibold
            px-6 py-2 rounded-full shadow-lg transition
            w-fit">
     Ver productos
-</button>
+            </a>
             </div>
 
         </div>
