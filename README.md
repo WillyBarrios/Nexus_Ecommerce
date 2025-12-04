@@ -500,24 +500,6 @@ Ver el [Manual de Testing](docs/MANUAL_TESTING.md) para un checklist completo de
 
 ---
 
-## Contribución
-
-Este proyecto es parte de un trabajo académico. Para contribuir:
-
-1. Fork el repositorio
-2. Crear una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abrir un Pull Request
-
----
-
-## Licencia
-
-Este proyecto es de uso académico y educativo.
-
----
-
 ## Contacto y Soporte
 
 Para más información o soporte técnico:
