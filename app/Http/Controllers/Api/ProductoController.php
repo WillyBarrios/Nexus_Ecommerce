@@ -147,8 +147,17 @@ class ProductoController extends Controller
     
     public function agregarImagen(Request $request, $id)
     {
+        // Validar que se envió una imagen o una URL
         $validator = Validator::make($request->all(), [
-            'url_imagen' => 'required|url'
+            'imagen' => 'required_without:url_imagen|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'url_imagen' => 'required_without:imagen|url'
+        ], [
+            'imagen.required_without' => 'Debe proporcionar una imagen o una URL',
+            'imagen.image' => 'El archivo debe ser una imagen',
+            'imagen.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif o webp',
+            'imagen.max' => 'La imagen no debe ser mayor a 2MB',
+            'url_imagen.required_without' => 'Debe proporcionar una URL o una imagen',
+            'url_imagen.url' => 'La URL no es válida'
         ]);
         
         if ($validator->fails()) {
@@ -160,7 +169,21 @@ class ProductoController extends Controller
         }
         
         try {
-            $imagen = $this->productoService->agregarImagen($id, $request->url_imagen);
+            $urlImagen = null;
+            
+            // Si se subió un archivo, guardarlo
+            if ($request->hasFile('imagen')) {
+                $imagen = $request->file('imagen');
+                $nombreArchivo = time() . '_' . uniqid() . '.' . $imagen->getClientOriginalExtension();
+                $ruta = $imagen->storeAs('productos', $nombreArchivo, 'public');
+                $urlImagen = asset('storage/' . $ruta);
+            } 
+            // Si se proporcionó una URL, usarla directamente
+            else if ($request->has('url_imagen')) {
+                $urlImagen = $request->url_imagen;
+            }
+            
+            $imagen = $this->productoService->agregarImagen($id, $urlImagen);
             
             return response()->json([
                 'success' => true,
@@ -170,7 +193,7 @@ class ProductoController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Producto no encontrado'
+                'message' => $e->getMessage()
             ], 404);
         }
     }
@@ -187,7 +210,7 @@ class ProductoController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Imagen no encontrada'
+                'message' => $e->getMessage()
             ], 404);
         }
     }
