@@ -73,8 +73,8 @@
             </button>
 
             <!-- Carrusel -->
-            <div id="carouselProducts"
-                 class="flex gap-8 overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory pb-3">
+           <div id="carouselProducts"
+     class="flex gap-8 overflow-hidden pb-3">
 
                 {{-- CARD 1 --}}
                 <article
@@ -171,7 +171,10 @@
                     </div>
                 </article>
 
+                
+
             </div>
+
 
             <!-- Flecha derecha -->
             <button id="btnRight"
