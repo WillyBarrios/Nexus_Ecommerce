@@ -22,21 +22,11 @@
                 </style>
 </head>
 
-
-
-<<<<<<< HEAD
-<body class="bg-white text-gray-900 flex flex-col min-h-screen">
-=======
 <body 
 
 x-data="cartGlobal()"
 
 class="bg-white text-gray-900 flex flex-col min-h-screen">
-
-
-
-
->>>>>>> 58a03fa (se agrego modal de carrito de compras con alpinjs en funcionamiento y ya configuracion en proceso)
 
     {{-- NAVBAR --}}
     <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
