@@ -1,6 +1,10 @@
 # Ignorar carpeta de Kiro (herramienta de desarrollo)
 .kiro/
 
+# Archivos de planificacion (no subir a GitHub)
+PLAN_*.md
+RESUMEN_*.md
+
 # Laravel
 /node_modules
 /public/hot
