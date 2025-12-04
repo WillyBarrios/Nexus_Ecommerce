@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Producto;
 use App\Models\MovimientoInventario;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoService
 {
@@ -139,6 +140,18 @@ class ProductoService
     public function eliminarImagen($idImagen)
     {
         $imagen = \App\Models\ImagenProducto::findOrFail($idImagen);
+        
+        // Si la imagen está almacenada localmente, eliminar el archivo físico
+        if (str_contains($imagen->url_imagen, 'storage/productos/')) {
+            $rutaArchivo = str_replace(asset('storage/'), '', $imagen->url_imagen);
+            $rutaArchivo = str_replace(url('storage/'), '', $rutaArchivo);
+            $rutaArchivo = 'public/' . basename(dirname($rutaArchivo)) . '/' . basename($rutaArchivo);
+            
+            if (\Storage::exists($rutaArchivo)) {
+                \Storage::delete($rutaArchivo);
+            }
+        }
+        
         $imagen->delete();
         
         return true;
