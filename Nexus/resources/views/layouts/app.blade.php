@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus</title>
+    <!--script para el carrito-->
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <!-- ÍCONOS PHOSPHOR (v2, regular) -->
     <link
@@ -13,11 +15,28 @@
     />
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+                <!--evita que aparezca en la pantalla cuando se cambia-->
+                <style>
+                  [x-cloak] { display: none !important; }
+                </style>
 </head>
 
 
 
+<<<<<<< HEAD
 <body class="bg-white text-gray-900 flex flex-col min-h-screen">
+=======
+<body 
+
+x-data="cartGlobal()"
+
+class="bg-white text-gray-900 flex flex-col min-h-screen">
+
+
+
+
+>>>>>>> 58a03fa (se agrego modal de carrito de compras con alpinjs en funcionamiento y ya configuracion en proceso)
 
     {{-- NAVBAR --}}
     <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
@@ -72,15 +91,36 @@
                     </svg>
                 </a>
 
-                {{-- ICONO CARRITO (SVG) --}}
-                <button class="text-[#1d2ea3] hover:text-[#3d50ff]">
-                    <svg xmlns="http://www.w3.org/2000/svg" 
-                         viewBox="0 0 24 24" 
-                         class="w-6 h-6">
-                        <path fill="currentColor"
-                              d="M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2a2 2 0 0 0-2-2ZM6.2 6l-.35-1.4A1 1 0 0 0 4.88 4H3a1 1 0 0 0 0 2h1.17l2.1 8.39A1 1 0 0 0 7.24 15h9.52a1 1 0 0 0 1-.76l1.24-5A1 1 0 0 0 18 8H7.42L7.09 6.8A1 1 0 0 0 6.2 6Z" />
-                    </svg>
+
+
+                
+
+
+                <button 
+                 x-data
+                 @click="window.dispatchEvent(new CustomEvent('toggle-cart'))"
+                 type="button"
+                 class="relative text-blue-900 hover:text-blue-700 transition"
+                    >
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                      d="M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm-1-12l-.35-1.4A1 1 0 0 0 4.88 4H3a1 1 0 0 0 0 2h1.17l2.1 8.39A1 1 0 0 0 7.24 15h9.52a1 1 0 0 0 1-.76l1.24-5A1 1 0 0 0 18 8H7.42Z" />
+                     </svg>
                 </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </div>
         </div>
@@ -90,6 +130,12 @@
     <main>
         @yield('content')
     </main>
+    
+
+@include('carrito')
+
+
+
 
 @hasSection('no_footer')
   @else
@@ -166,6 +212,47 @@
     </div>
 </footer>
 @endif
+
+
+
+
+<!--script para funcionamiento del carrito-->
+<script>
+function cartGlobal() {
+    return {
+        cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
+        
+        get totalItems() {
+            return this.cartItems.reduce((sum, item) => sum + item.qty, 0);
+        },
+
+        get totalAmount() {
+            return this.cartItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
+        },
+
+        addToCart(product) {
+            let exists = this.cartItems.find(p => p.id === product.id);
+
+            if (exists) {
+                exists.qty++;
+            } else {
+                this.cartItems.push(product);
+            }
+
+            this.save();
+            window.dispatchEvent(new CustomEvent('open-cart'));
+        },
+
+        save() {
+            localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+        }
+    }
+}
+</script>
+
+
+
+
 
 
 

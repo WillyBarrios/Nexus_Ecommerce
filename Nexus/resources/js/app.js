@@ -87,3 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+
+
+//hace referencia  para la configuracion de el carrito
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();

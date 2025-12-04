@@ -16,6 +16,10 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+<<<<<<< HEAD
         "phosphor-icons": "^1.4.2"
+=======
+        "alpinejs": "^3.15.2"
+>>>>>>> 58a03fa (se agrego modal de carrito de compras con alpinjs en funcionamiento y ya configuracion en proceso)
     }
 }
