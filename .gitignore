@@ -4,6 +4,9 @@
 # Archivos de planificacion (no subir a GitHub)
 PLAN_*.md
 RESUMEN_*.md
+RESULTADOS_*.md
+test_endpoints.md
+RESUMEN_SESION_COMPLETA.md
 
 # Laravel
 /node_modules
