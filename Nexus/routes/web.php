@@ -18,19 +18,19 @@ Route::get('/', function () {
 
 // Login (duplicado, pero lo dejamos igual que estaba)
 Route::get('/login', function () {
-    return view('login');
+    return view('auth.login');
 })->name('login');
 
 
 
 // ruta para olvide mi contraseña (versión simple original)
 Route::get('/password', function () {
-    return view('password');
+    return view('auth.password');
 });
 
 // ruta para creación de usuario
 Route::get('/register', function () {
-    return view('register');
+    return view('auth.register');
 });
 
 
@@ -84,8 +84,8 @@ Route::get('/ofertas', function () {
 
 // Olvidé contraseña → formulario de correo (esta sobrescribe la de arriba, y está bien)
 Route::get('/password', function () {
-    return view('password');
-})->name('password.reset');
+    return view('auth.password');
+})->name('auth.password.reset');
 
 // Simulación: al enviar correo, redirige a cambiar contraseña
 Route::post('/password', function () {
@@ -95,7 +95,7 @@ Route::post('/password', function () {
 
 // Cambiar contraseña
 Route::get('/reset-password', function () {
-    return view('reset-password');
+    return view('auth.reset-password');
 });
 
 // Guardar nueva contraseña (falso, solo para prueba)
