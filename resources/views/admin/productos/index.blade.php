@@ -103,10 +103,7 @@
             </table>
         </div>
 
-        <!-- Paginación -->
-        <div class="mt-3">
-            {{ $productos->links() }}
-        </div>
+        
     </div>
 </div>
 @endsection
