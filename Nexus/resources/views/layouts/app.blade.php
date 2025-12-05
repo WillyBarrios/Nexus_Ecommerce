@@ -117,7 +117,7 @@ class="bg-white text-gray-900 flex flex-col min-h-screen">
     </header>
 
     {{-- CONTENIDO --}}
-    <main>
+    <main class="flex-1">
         @yield('content')
     </main>
     
