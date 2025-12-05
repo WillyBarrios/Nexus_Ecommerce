@@ -27,7 +27,7 @@
 <!--funcion de cartglobal que sirve para agregar productos en cualquier parte de la page-->
 <body x-data="cartGlobal()"  
 
-class="bg-white text-gray-900">
+class="bg-white text-gray-900 flex flex-col min-h-screen">
 
     {{-- NAVBAR --}}
     <header class="w-full bg-[#f4f6fb] backdrop-blur-xl border-b border-gray-200">
@@ -209,6 +209,39 @@ class="bg-white text-gray-900">
 
 
 
+<!--script para funcionamiento del carrito-->
+<script>
+function cartGlobal() {
+    return {
+        cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
+        
+        get totalItems() {
+            return this.cartItems.reduce((sum, item) => sum + item.qty, 0);
+        },
+
+        get totalAmount() {
+            return this.cartItems.reduce((sum, item) => sum + (item.qty * item.price), 0);
+        },
+
+        addToCart(product) {
+            let exists = this.cartItems.find(p => p.id === product.id);
+
+            if (exists) {
+                exists.qty++;
+            } else {
+                this.cartItems.push(product);
+            }
+
+            this.save();
+            window.dispatchEvent(new CustomEvent('open-cart'));
+        },
+
+        save() {
+            localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+        }
+    }
+}
+</script>
 
 
 
