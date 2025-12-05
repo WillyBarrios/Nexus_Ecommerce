@@ -73,7 +73,7 @@ class="bg-white text-gray-900 flex flex-col min-h-screen">
                 </div>
 
                 {{-- ICONO USUARIO (SVG) --}}
-                <a href="{{ route('account.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
+                <a href="{{ request()->is('admin*') ? route('admin.profile') : route('account.profile') }}" class="text-[#1d2ea3] hover:text-[#3d50ff]">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                          viewBox="0 0 24 24" 
                          class="w-6 h-6">
