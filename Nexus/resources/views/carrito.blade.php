@@ -64,7 +64,7 @@
                                 Q<span x-text="(item.qty * item.price).toFixed(2)"></span>
                             </p>
 
-                            <!--botones de acciones-->
+                            
                             <div class="flex gap-2 mt-2">
                                 <button @click="updateQty(item.id, 'minus')" class="px-2 py-1 bg-gray-200 rounded">-</button>
                                 <button @click="updateQty(item.id, 'plus')" class="px-2 py-1 bg-gray-200 rounded">+</button>
@@ -76,7 +76,7 @@
 
             </div>
 
-            <!-- Footer solo aparece si hay productos-->
+            <!-- Footer-->
             <div x-show="totalItems > 0" class="p-4 bg-gray-100 border-t">
                 <p class="text-right text-xl font-bold text-blue-700">
                     Total: Q<span x-text="totalAmount.toFixed(2)"></span>
@@ -93,37 +93,37 @@
 </div>
 
 
-<script>//logica del carrito
+<script>
 function cart() {
-    return { //funciones del carrito para los productos
+    return { 
         open: false,
         cartItems: [],
         totalItems: 0,
         totalAmount: 0,
 
-        loadCart() {   //se mantiene el carrito aunque se recargue page
+        loadCart() { 
             this.cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
             this.calculate();
         },
 
-        saveCart() {   //guarda en localstorage
+        saveCart() { 
             localStorage.setItem('cart', JSON.stringify(this.cartItems));
         },
 
-        calculate() {    //calcula totales o cantidades
+        calculate() {    
             this.totalItems = this.cartItems.reduce((n, i) => n + i.qty, 0);
             this.totalAmount = this.cartItems.reduce((n, i) => n + i.qty * i.price, 0);
             this.saveCart();
         },
 
-        add(product) {  //funcion para agregar producto
+        add(product) { 
             let item = this.cartItems.find(i => i.id === product.id);
             if (item) item.qty++;
             else this.cartItems.push({...product, qty: 1});
             this.calculate();
         },
 
-        //actualiza la cantidad si se agregan o quitan productos
+       
         updateQty(id, action) {
             let item = this.cartItems.find(i => i.id === id);
             if (!item) return;
@@ -136,14 +136,14 @@ function cart() {
             this.calculate();
         },
 
-        remove(id) {  //elimina los productos
+        remove(id) { 
             this.cartItems = this.cartItems.filter(i => i.id !== id);
             this.calculate();
         }
     }
 }
 
-//funcion que agrega al carrito los productos
+
 window.addEventListener('add-to-cart', (event) => {
     let product = event.detail;
     cartInstance.add(product);
