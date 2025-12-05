@@ -4,20 +4,89 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Código del carrusel existente...
-    const carousel = document.getElementById("carouselProducts");
-    const btnRight = document.getElementById("btnRight");
-    const btnLeft = document.getElementById("btnLeft");
+    // ---------- CARRUSEL INFINITO "Productos nuevos" ----------
+    const container = document.getElementById("carouselProducts");
+    const btnRight  = document.getElementById("btnRight");
+    const btnLeft   = document.getElementById("btnLeft");
 
-    if (carousel) {
-        const cardWidth = 280; // tamaño + gap aprox
+    const SLIDE_DURATION = 180; // Duración de la animación
 
-        btnRight.addEventListener("click", () => {
-            carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
+    if (container && btnRight && btnLeft) {
+        let isAnimating = false;
+        let STEP = 0; // ancho de card + gap
+
+        // Calcula el tamaño de un slide
+        const calculateStep = () => {
+            const firstCard = container.querySelector("article");
+            if (!firstCard) return;
+
+            const rect = firstCard.getBoundingClientRect();
+            const styles = window.getComputedStyle(firstCard);
+            const marginRight = parseFloat(styles.marginRight) || 0;
+
+            STEP = rect.width + marginRight;
+        };
+
+        // Se calcula al cargar
+        calculateStep();
+        // Y se recalcula si cambia el tamaño de pantalla
+        window.addEventListener("resize", calculateStep);
+
+        const moveNext = () => {
+            if (isAnimating) return;
+            const step = STEP;
+            if (!step) return;
+
+            isAnimating = true;
+            const first = container.querySelector("article");
+
+            container.style.transition = `transform ${SLIDE_DURATION}ms ease-out`;
+            container.style.transform  = `translateX(-${step}px)`;
+
+            const onEnd = () => {
+                container.style.transition = "none";
+                container.style.transform  = "translateX(0)";
+                if (first) container.appendChild(first); // pasa la primera al final
+                isAnimating = false;
+            };
+
+            container.addEventListener("transitionend", onEnd, { once: true });
+        };
+
+        const movePrev = () => {
+            if (isAnimating) return;
+            const step = STEP;
+            if (!step) return;
+
+            isAnimating = true;
+            const last = container.querySelector("article:last-child");
+            if (last) container.insertBefore(last, container.firstChild); // pasa la última al inicio
+
+            // Colocamos desplazado a la izquierda y animamos de regreso
+            container.style.transition = "none";
+            container.style.transform  = `translateX(-${step}px)`;
+
+            requestAnimationFrame(() => {
+                container.style.transition = `transform ${SLIDE_DURATION}ms ease-out`;
+                container.style.transform  = "translateX(0)";
+
+                const onEnd = () => {
+                    container.style.transition = "none";
+                    isAnimating = false;
+                };
+
+                container.addEventListener("transitionend", onEnd, { once: true });
+            });
+        };
+
+        btnRight.addEventListener("click", (e) => {
+            e.preventDefault();
+            moveNext();   // 1-2-3-4-5-1-2-3-4-5...
         });
 
-        btnLeft.addEventListener("click", () => {
-            carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
+        btnLeft.addEventListener("click", (e) => {
+            e.preventDefault();
+            movePrev();   // 1-5-4-3-2-1-5-4-3-2...
         });
     }
 
@@ -87,3 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+
+
+//hace referencia  para la configuracion de el carrito
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();

@@ -146,3 +146,4 @@ Route::get('/categorias/{slug}', function ($slug) {
 
 })->name('category.show');
 
+
