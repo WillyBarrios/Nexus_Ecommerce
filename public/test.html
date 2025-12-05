@@ -3,354 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pruebas API Nexus</title>
+    <title>Nexus Backend - Pruebas de Endpoints</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }
-        
         .header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            color: #666;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
+            padding: 30px;
+            text-align: center;
         }
-        
-        .btn:hover {
-            transform: translateY(-2px);
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
-        
-        .btn:active {
-            transform: translateY(0);
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
-        
-        .response {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        .content {
+            padding: 30px;
         }
-        
-        .response h2 {
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
             color: #667eea;
             margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
         }
-        
-        .response-content {
+        .endpoint {
             background: #f8f9fa;
             padding: 15px;
+            margin-bottom: 10px;
             border-radius: 8px;
             border-left: 4px solid #667eea;
-            max-height: 400px;
-            overflow-y: auto;
         }
-        
-        .response-content pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        .endpoint .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+        .method.get { background: #28a745; color: white; }
+        .method.post { background: #007bff; color: white; }
+        .method.put { background: #ffc107; color: black; }
+        .method.delete { background: #dc3545; color: white; }
+        .endpoint .url {
             font-family: 'Courier New', monospace;
-            font-size: 13px;
             color: #333;
         }
-        
-        .success {
-            border-left-color: #28a745;
+        .endpoint .desc {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
-        
-        .error {
-            border-left-color: #dc3545;
-        }
-        
-        .token-display {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
+        .status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            word-break: break-all;
+            margin-bottom: 20px;
         }
-        
-        .token-display strong {
-            color: #856404;
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        .test-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #dee2e6;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧪 Pruebas API Nexus</h1>
-            <p>Sistema de autenticación conectado a base de datos MySQL</p>
+            <h1>Nexus Backend API</h1>
+            <p>Sistema de pruebas de endpoints - E-commerce Backend</p>
         </div>
-        
-        <div class="grid">
-            <!-- Registro -->
-            <div class="card">
-                <h2>📝 Registrar Usuario</h2>
-                <form id="registerForm">
-                    <div class="form-group">
-                        <label>Nombre Completo:</label>
-                        <input type="text" id="regName" placeholder="Juan Pérez" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" id="regEmail" placeholder="juan@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Contraseña:</label>
-                        <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirmar Contraseña:</label>
-                        <input type="password" id="regPasswordConfirm" placeholder="Repetir contraseña" required>
-                    </div>
-                    <button type="submit" class="btn">Registrar</button>
-                </form>
+
+        <div class="content">
+            <div class="status">
+                <strong>Estado del servidor:</strong> <span id="server-status">Verificando...</span>
             </div>
-            
-            <!-- Login -->
-            <div class="card">
-                <h2>🔐 Iniciar Sesión</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" id="loginEmail" placeholder="juan@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Contraseña:</label>
-                        <input type="password" id="loginPassword" placeholder="Tu contraseña" required>
-                    </div>
-                    <button type="submit" class="btn">Iniciar Sesión</button>
-                </form>
+
+            <div class="section">
+                <h2>Endpoints Publicos</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/productos</span>
+                    <div class="desc">Listar todos los productos disponibles</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/productos/{id}</span>
+                    <div class="desc">Obtener detalles de un producto especifico</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/categorias</span>
+                    <div class="desc">Listar todas las categorias</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/marcas</span>
+                    <div class="desc">Listar todas las marcas</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/login</span>
+                    <div class="desc">Iniciar sesion (email, password)</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/register</span>
+                    <div class="desc">Registrar nuevo usuario</div>
+                </div>
             </div>
-            
-            <!-- Obtener Usuario -->
-            <div class="card">
-                <h2>👤 Obtener Usuario</h2>
-                <p style="color: #666; margin-bottom: 15px; font-size: 14px;">
-                    Requiere token de autenticación
-                </p>
-                <button onclick="getUser()" class="btn">Obtener Datos</button>
+
+            <div class="section">
+                <h2>Endpoints Protegidos (Requieren Token)</h2>
+                
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/carrito</span>
+                    <div class="desc">Ver carrito del usuario autenticado</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/carrito</span>
+                    <div class="desc">Agregar producto al carrito</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method put">PUT</span>
+                    <span class="url">/api/carrito/{id}</span>
+                    <div class="desc">Actualizar cantidad en carrito</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method delete">DELETE</span>
+                    <span class="url">/api/carrito/{id}</span>
+                    <div class="desc">Eliminar producto del carrito</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/pedidos</span>
+                    <div class="desc">Crear nuevo pedido desde carrito</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method get">GET</span>
+                    <span class="url">/api/pedidos</span>
+                    <div class="desc">Listar pedidos del usuario</div>
+                </div>
+
+                <div class="endpoint">
+                    <span class="method post">POST</span>
+                    <span class="url">/api/pagos</span>
+                    <div class="desc">Procesar pago de pedido</div>
+                </div>
             </div>
-            
-            <!-- Logout -->
-            <div class="card">
-                <h2>🚪 Cerrar Sesión</h2>
-                <p style="color: #666; margin-bottom: 15px; font-size: 14px;">
-                    Invalida el token actual
-                </p>
-                <button onclick="logout()" class="btn">Cerrar Sesión</button>
-            </div>
-            
-            <!-- Recuperar Contraseña -->
-            <div class="card">
-                <h2>🔑 Recuperar Contraseña</h2>
-                <form id="forgotForm">
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" id="forgotEmail" placeholder="tu@email.com" required>
-                    </div>
-                    <button type="submit" class="btn">Solicitar Token</button>
-                </form>
-            </div>
-            
-            <!-- Restablecer Contraseña -->
-            <div class="card">
-                <h2>🔐 Restablecer Contraseña</h2>
-                <form id="resetForm">
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" id="resetEmail" placeholder="tu@email.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Token:</label>
-                        <input type="text" id="resetToken" placeholder="Token recibido" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Nueva Contraseña:</label>
-                        <input type="password" id="resetPassword" placeholder="Mínimo 8 caracteres" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirmar Contraseña:</label>
-                        <input type="password" id="resetPasswordConfirm" placeholder="Repetir contraseña" required>
-                    </div>
-                    <button type="submit" class="btn">Restablecer</button>
-                </form>
+
+            <div class="section">
+                <h2>Pruebas Rapidas</h2>
+                <button class="test-btn" onclick="testProductos()">Probar GET /api/productos</button>
+                <button class="test-btn" onclick="testCategorias()">Probar GET /api/categorias</button>
+                <button class="test-btn" onclick="testMarcas()">Probar GET /api/marcas</button>
+                <button class="test-btn" onclick="testLogin()">Probar POST /api/login</button>
+                
+                <div id="test-result" class="result"></div>
             </div>
         </div>
-        
-        <!-- Token Display -->
-        <div id="tokenDisplay" class="token-display" style="display: none;">
-            <strong>🔑 Token Actual:</strong><br>
-            <span id="tokenValue"></span>
-        </div>
-        
-        <!-- Respuesta -->
-        <div class="response">
-            <h2>📡 Respuesta del Servidor</h2>
-            <div id="responseContent" class="response-content">
-                <pre>Esperando petición...</pre>
-            </div>
+
+        <div class="footer">
+            <p>Nexus E-commerce Backend - Laravel 12</p>
+            <p>Desarrollado para pruebas de integracion y validacion de endpoints</p>
         </div>
     </div>
-    
+
     <script>
-        let authToken = null;
-        const API_URL = '/api';
-        
-        // Función para mostrar respuesta
-        function showResponse(data, isError = false) {
-            const responseDiv = document.getElementById('responseContent');
-            responseDiv.className = 'response-content ' + (isError ? 'error' : 'success');
-            responseDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
-        }
-        
-        // Función para mostrar token
-        function showToken(token) {
-            authToken = token;
-            document.getElementById('tokenDisplay').style.display = 'block';
-            document.getElementById('tokenValue').textContent = token;
-        }
-        
-        // Función para ocultar token
-        function hideToken() {
-            authToken = null;
-            document.getElementById('tokenDisplay').style.display = 'none';
-        }
-        
-        // Registro
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const passwordConfirm = document.getElementById('regPasswordConfirm').value;
-            
-            if (password !== passwordConfirm) {
-                showResponse({ error: 'Las contraseñas no coinciden' }, true);
-                return;
-            }
-            
+        const API_URL = window.location.origin + '/api';
+
+        // Verificar estado del servidor al cargar
+        window.addEventListener('load', async () => {
             try {
-                const response = await fetch(API_URL + '/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        password: password,
-                        password_confirmation: passwordConfirm
-                    })
-                });
-                
-                const data = await response.json();
-                
+                const response = await fetch(API_URL + '/productos');
                 if (response.ok) {
-                    showResponse(data);
-                    showToken(data.data.token);
-                    document.getElementById('registerForm').reset();
+                    document.getElementById('server-status').textContent = 'Servidor funcionando correctamente';
+                    document.getElementById('server-status').style.color = '#155724';
                 } else {
-                    showResponse(data, true);
+                    document.getElementById('server-status').textContent = 'Servidor respondiendo con errores';
+                    document.getElementById('server-status').style.color = '#721c24';
                 }
             } catch (error) {
-                showResponse({ error: error.message }, true);
+                document.getElementById('server-status').textContent = 'Servidor no disponible';
+                document.getElementById('server-status').style.color = '#721c24';
             }
         });
-        
-        // Login
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
+
+        function showResult(data) {
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+            resultDiv.classList.add('show');
+        }
+
+        async function testProductos() {
+            try {
+                const response = await fetch(API_URL + '/productos');
+                const data = await response.json();
+                showResult({ status: response.status, data });
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testCategorias() {
+            try {
+                const response = await fetch(API_URL + '/categorias');
+                const data = await response.json();
+                showResult({ status: response.status, data });
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testMarcas() {
+            try {
+                const response = await fetch(API_URL + '/marcas');
+                const data = await response.json();
+                showResult({ status: response.status, data });
+            } catch (error) {
+                showResult({ error: error.message });
+            }
+        }
+
+        async function testLogin() {
             try {
                 const response = await fetch(API_URL + '/login', {
                     method: 'POST',
@@ -359,155 +306,16 @@
                         'Accept': 'application/json'
                     },
                     body: JSON.stringify({
-                        email: email,
-                        password: password
+                        email: 'admin@test.com',
+                        password: 'admin123'
                     })
                 });
-                
                 const data = await response.json();
-                
-                if (response.ok) {
-                    showResponse(data);
-                    showToken(data.data.token);
-                    document.getElementById('loginForm').reset();
-                } else {
-                    showResponse(data, true);
-                }
+                showResult({ status: response.status, data });
             } catch (error) {
-                showResponse({ error: error.message }, true);
-            }
-        });
-        
-        // Obtener Usuario
-        async function getUser() {
-            if (!authToken) {
-                showResponse({ error: 'Debes iniciar sesión primero' }, true);
-                return;
-            }
-            
-            try {
-                const response = await fetch(API_URL + '/user', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + authToken
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResponse(data);
-                } else {
-                    showResponse(data, true);
-                    if (response.status === 401) {
-                        hideToken();
-                    }
-                }
-            } catch (error) {
-                showResponse({ error: error.message }, true);
+                showResult({ error: error.message });
             }
         }
-        
-        // Logout
-        async function logout() {
-            if (!authToken) {
-                showResponse({ error: 'No hay sesión activa' }, true);
-                return;
-            }
-            
-            try {
-                const response = await fetch(API_URL + '/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + authToken
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResponse(data);
-                    hideToken();
-                } else {
-                    showResponse(data, true);
-                }
-            } catch (error) {
-                showResponse({ error: error.message }, true);
-            }
-        }
-        
-        // Solicitar recuperación de contraseña
-        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('forgotEmail').value;
-            
-            try {
-                const response = await fetch(API_URL + '/password/forgot', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ email: email })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResponse(data);
-                    document.getElementById('forgotForm').reset();
-                } else {
-                    showResponse(data, true);
-                }
-            } catch (error) {
-                showResponse({ error: error.message }, true);
-            }
-        });
-        
-        // Restablecer contraseña
-        document.getElementById('resetForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('resetEmail').value;
-            const token = document.getElementById('resetToken').value;
-            const password = document.getElementById('resetPassword').value;
-            const passwordConfirm = document.getElementById('resetPasswordConfirm').value;
-            
-            if (password !== passwordConfirm) {
-                showResponse({ error: 'Las contraseñas no coinciden' }, true);
-                return;
-            }
-            
-            try {
-                const response = await fetch(API_URL + '/password/reset', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        token: token,
-                        password: password,
-                        password_confirmation: passwordConfirm
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    showResponse(data);
-                    document.getElementById('resetForm').reset();
-                } else {
-                    showResponse(data, true);
-                }
-            } catch (error) {
-                showResponse({ error: error.message }, true);
-            }
-        });
     </script>
 </body>
 </html>

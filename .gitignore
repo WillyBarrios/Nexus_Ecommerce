@@ -1,18 +1,5 @@
-# Ignorar carpeta de Kiro (herramienta de desarrollo)
+# Archivos temporales de desarrollo
 .kiro/
-
-# Archivos de planificacion (no subir a GitHub)
-PLAN_*.md
-RESUMEN_*.md
-RESULTADOS_*.md
-PRUEBA_*.md
-CONFIGURACION_*.md
-test_endpoints.md
-RESUMEN_SESION_COMPLETA.md
-GUIA_INSTALACION_EQUIPO.md
-PROBLEMAS_POTENCIALES.md
-ACCION_URGENTE_ANTES_DE_PUSH.md
-IMPLEMENTACIONES_COMPLETADAS.md
 
 # Laravel
 /node_modules
