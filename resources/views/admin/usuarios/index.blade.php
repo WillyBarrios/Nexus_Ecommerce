@@ -104,9 +104,21 @@
             </table>
         </div>
 
-        <div class="mt-3">
-            {{ $usuarios->links() }}
-        </div>
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+    {{-- Texto informativo --}}
+    <div class="small text-muted">
+        @if($usuarios->total() > 0)
+            Mostrando {{ $usuarios->firstItem() }} a {{ $usuarios->lastItem() }} de {{ $usuarios->total() }} resultados
+        @else
+            Mostrando 0 resultados
+        @endif
+    </div>
+
+    {{-- Paginación (Bootstrap 5) y conservando query params --}}
+    <div>
+        {!! $usuarios->appends(request()->only('rol'))->links('pagination::bootstrap-5') !!}
+    </div>
+</div>
     </div>
 </div>
 @endsection
