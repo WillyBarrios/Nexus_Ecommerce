@@ -14,17 +14,18 @@
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css"
     />
 
+    <!--carga los archhivos dede las carpetas-->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-                <!--evita que aparezca en la pantalla cuando se cambia-->
+                <!--evita que aparezca en la pantalla cuando se cambia el modal del carrito-->
                 <style>
                   [x-cloak] { display: none !important; }
                 </style>
 </head>
 
-<body 
 
-x-data="cartGlobal()"
+<!--funcion de cartglobal que sirve para agregar productos en cualquier parte de la page-->
+<body x-data="cartGlobal()"  
 
 class="bg-white text-gray-900">
 
@@ -83,18 +84,20 @@ class="bg-white text-gray-900">
 
 
 
-                
-
-
+                <!--boton de carrito de compras-->
+                <!--funcion que hace que salga el modal con sus estilos-->
                 <button 
-                 x-data
+                 x-data       
                  @click="window.dispatchEvent(new CustomEvent('toggle-cart'))"
                  type="button"
                  class="relative text-blue-900 hover:text-blue-700 transition"
                     >
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="currentColor"
-                      d="M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm-1-12l-.35-1.4A1 1 0 0 0 4.88 4H3a1 1 0 0 0 0 2h1.17l2.1 8.39A1 1 0 0 0 7.24 15h9.52a1 1 0 0 0 1-.76l1.24-5A1 1 0 0 0 18 8H7.42Z" />
+                      d="M7 18a2 2 0 1 0 2 2a2 2 0 0 0-2-2Zm10 0a2 2 0 1 0 
+                      2 2a2 2 0 0 0-2-2Zm-1-12l-.35-1.4A1 1 0 0 0 4.88 4H3a1
+                       1 0 0 0 0 2h1.17l2.1 8.39A1 1 0 0 0 7.24 15h9.52a1 1 0
+                        0 0 1-.76l1.24-5A1 1 0 0 0 18 8H7.42Z" />
                      </svg>
                 </button>
 
