@@ -23,9 +23,10 @@ class MarcaAdminController extends Controller
     /**
      * Listar todas las marcas
      */
-    public function index()
+    public function index(Request $request)
     {
-        $marcas = $this->marcaService->listarMarcas(15);
+        $filtros = $request->only(['buscar']);
+        $marcas = $this->marcaService->listarMarcas($filtros, 15);
         return view('admin.marcas.index', compact('marcas'));
     }
 

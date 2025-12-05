@@ -6,9 +6,16 @@ use App\Models\Marca;
 
 class MarcaService
 {
-    public function listarMarcas($perPage = null)
+    public function listarMarcas($filtros = [], $perPage = null)
     {
         $query = Marca::withCount('productos');
+        
+        // Filtro por búsqueda de nombre
+        if (isset($filtros['buscar']) && !empty($filtros['buscar'])) {
+            $query->where('nombre_marca', 'like', '%' . $filtros['buscar'] . '%');
+        }
+        
+        $query->orderBy('nombre_marca', 'asc');
         
         if ($perPage) {
             return $query->paginate($perPage);

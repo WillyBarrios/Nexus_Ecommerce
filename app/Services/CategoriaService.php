@@ -6,9 +6,16 @@ use App\Models\Categoria;
 
 class CategoriaService
 {
-    public function listarCategorias($perPage = null)
+    public function listarCategorias($filtros = [], $perPage = null)
     {
         $query = Categoria::withCount('productos');
+        
+        // Filtro por búsqueda de nombre
+        if (isset($filtros['buscar']) && !empty($filtros['buscar'])) {
+            $query->where('nombre_categoria', 'like', '%' . $filtros['buscar'] . '%');
+        }
+        
+        $query->orderBy('nombre_categoria', 'asc');
         
         if ($perPage) {
             return $query->paginate($perPage);

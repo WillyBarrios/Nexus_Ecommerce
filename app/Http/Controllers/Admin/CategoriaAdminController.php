@@ -23,9 +23,10 @@ class CategoriaAdminController extends Controller
     /**
      * Listar todas las categorías
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorias = $this->categoriaService->listarCategorias(15);
+        $filtros = $request->only(['buscar']);
+        $categorias = $this->categoriaService->listarCategorias($filtros, 15);
         return view('admin.categorias.index', compact('categorias'));
     }
 

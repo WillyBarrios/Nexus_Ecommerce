@@ -24,6 +24,27 @@
     </div>
 @endif
 
+<!-- Filtros -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="GET" action="{{ route('admin.categorias.index') }}" class="row g-3">
+            <div class="col-md-6">
+                <label for="buscar" class="form-label">Buscar por nombre</label>
+                <input type="text" name="buscar" id="buscar" class="form-control" 
+                       placeholder="Nombre de categoría..." value="{{ request('buscar') }}">
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-search"></i> Filtrar
+                </button>
+                <a href="{{ route('admin.categorias.index') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Limpiar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
@@ -70,8 +91,17 @@
             </table>
         </div>
 
-        <div class="mt-3">
-            {{ $categorias->links() }}
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+            <div class="small text-muted">
+                @if($categorias->total() > 0)
+                    Mostrando {{ $categorias->firstItem() }} a {{ $categorias->lastItem() }} de {{ $categorias->total() }} resultados
+                @else
+                    Mostrando 0 resultados
+                @endif
+            </div>
+            <div>
+                {!! $categorias->appends(request()->only(['buscar']))->links('pagination::bootstrap-5') !!}
+            </div>
         </div>
     </div>
 </div>
