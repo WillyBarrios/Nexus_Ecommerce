@@ -225,11 +225,19 @@
             </div>
 
             <div class="section">
-                <h2>Pruebas Rapidas</h2>
-                <button class="test-btn" onclick="testProductos()">Probar GET /api/productos</button>
-                <button class="test-btn" onclick="testCategorias()">Probar GET /api/categorias</button>
-                <button class="test-btn" onclick="testMarcas()">Probar GET /api/marcas</button>
-                <button class="test-btn" onclick="testLogin()">Probar POST /api/login</button>
+                <h2>Pruebas Automaticas</h2>
+                <button class="test-btn" onclick="runAllTests()" style="background: #28a745; font-size: 1.1em; padding: 15px 40px;">
+                    Ejecutar TODAS las Pruebas
+                </button>
+                <br><br>
+                <h3 style="color: #667eea; margin-top: 20px; margin-bottom: 10px;">Pruebas Individuales</h3>
+                <button class="test-btn" onclick="testProductos()">GET /api/productos</button>
+                <button class="test-btn" onclick="testCategorias()">GET /api/categorias</button>
+                <button class="test-btn" onclick="testMarcas()">GET /api/marcas</button>
+                <button class="test-btn" onclick="testLogin()">POST /api/login</button>
+                <button class="test-btn" onclick="testCarrito()">GET /api/carrito (requiere token)</button>
+                <button class="test-btn" onclick="testPedidos()">GET /api/pedidos (requiere token)</button>
+                <button class="test-btn" onclick="clearToken()" style="background: #dc3545;">Limpiar Token</button>
                 
                 <div id="test-result" class="result"></div>
             </div>
@@ -243,9 +251,18 @@
 
     <script>
         const API_URL = window.location.origin + '/api';
+        let authToken = localStorage.getItem('test_token') || null;
+        let testResults = [];
 
         // Verificar estado del servidor al cargar
         window.addEventListener('load', async () => {
+            await checkServerStatus();
+            if (authToken) {
+                updateAuthStatus(true);
+            }
+        });
+
+        async function checkServerStatus() {
             try {
                 const response = await fetch(API_URL + '/productos');
                 if (response.ok) {
@@ -259,7 +276,14 @@
                 document.getElementById('server-status').textContent = 'Servidor no disponible';
                 document.getElementById('server-status').style.color = '#721c24';
             }
-        });
+        }
+
+        function updateAuthStatus(isAuthenticated) {
+            const statusDiv = document.querySelector('.status');
+            if (isAuthenticated) {
+                statusDiv.innerHTML += '<br><strong>Token guardado:</strong> <span style="color: #155724;">Autenticado para pruebas protegidas</span>';
+            }
+        }
 
         function showResult(data) {
             const resultDiv = document.getElementById('test-result');
@@ -267,37 +291,145 @@
             resultDiv.classList.add('show');
         }
 
-        async function testProductos() {
+        function addTestResult(name, success, message, data = null) {
+            testResults.push({ name, success, message, data });
+            updateTestResultsDisplay();
+        }
+
+        function updateTestResultsDisplay() {
+            const resultDiv = document.getElementById('test-result');
+            let html = '<div style="font-family: Arial, sans-serif;">';
+            html += '<h3 style="margin-bottom: 15px;">Resultados de Pruebas:</h3>';
+            
+            testResults.forEach((result, index) => {
+                const color = result.success ? '#28a745' : '#dc3545';
+                const icon = result.success ? '✓' : '✗';
+                html += `<div style="margin-bottom: 10px; padding: 10px; background: ${result.success ? '#d4edda' : '#f8d7da'}; border-left: 4px solid ${color}; border-radius: 4px;">`;
+                html += `<strong style="color: ${color};">${icon} ${result.name}</strong><br>`;
+                html += `<span style="color: #333;">${result.message}</span>`;
+                if (result.data) {
+                    html += `<details style="margin-top: 5px;"><summary style="cursor: pointer; color: #666;">Ver datos</summary>`;
+                    html += `<pre style="margin-top: 5px; font-size: 0.85em; overflow-x: auto;">${JSON.stringify(result.data, null, 2)}</pre></details>`;
+                }
+                html += '</div>';
+            });
+            
+            const passed = testResults.filter(r => r.success).length;
+            const failed = testResults.filter(r => !r.success).length;
+            html += `<div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center;">`;
+            html += `<strong>Total: ${testResults.length} pruebas</strong> | `;
+            html += `<span style="color: #28a745;">✓ ${passed} exitosas</span> | `;
+            html += `<span style="color: #dc3545;">✗ ${failed} fallidas</span>`;
+            html += '</div></div>';
+            
+            resultDiv.innerHTML = html;
+            resultDiv.classList.add('show');
+        }
+
+        async function runAllTests() {
+            testResults = [];
+            const resultDiv = document.getElementById('test-result');
+            resultDiv.innerHTML = '<p style="text-align: center; padding: 20px;">Ejecutando pruebas...</p>';
+            resultDiv.classList.add('show');
+
+            // Pruebas publicas
+            await testProductos(true);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            await testCategorias(true);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            await testMarcas(true);
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            await testLogin(true);
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Si hay token, probar endpoints protegidos
+            if (authToken) {
+                await testCarrito(true);
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                await testPedidos(true);
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+
+            updateTestResultsDisplay();
+        }
+
+        async function testProductos(silent = false) {
             try {
                 const response = await fetch(API_URL + '/productos');
                 const data = await response.json();
-                showResult({ status: response.status, data });
+                
+                if (silent) {
+                    addTestResult(
+                        'GET /api/productos',
+                        response.ok,
+                        response.ok ? `${data.data?.length || 0} productos obtenidos` : 'Error al obtener productos',
+                        response.ok ? { total: data.data?.length, primeros_3: data.data?.slice(0, 3) } : data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
             } catch (error) {
-                showResult({ error: error.message });
+                if (silent) {
+                    addTestResult('GET /api/productos', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
             }
         }
 
-        async function testCategorias() {
+        async function testCategorias(silent = false) {
             try {
                 const response = await fetch(API_URL + '/categorias');
                 const data = await response.json();
-                showResult({ status: response.status, data });
+                
+                if (silent) {
+                    addTestResult(
+                        'GET /api/categorias',
+                        response.ok,
+                        response.ok ? `${data.data?.length || 0} categorias obtenidas` : 'Error al obtener categorias',
+                        response.ok ? { total: data.data?.length, categorias: data.data } : data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
             } catch (error) {
-                showResult({ error: error.message });
+                if (silent) {
+                    addTestResult('GET /api/categorias', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
             }
         }
 
-        async function testMarcas() {
+        async function testMarcas(silent = false) {
             try {
                 const response = await fetch(API_URL + '/marcas');
                 const data = await response.json();
-                showResult({ status: response.status, data });
+                
+                if (silent) {
+                    addTestResult(
+                        'GET /api/marcas',
+                        response.ok,
+                        response.ok ? `${data.data?.length || 0} marcas obtenidas` : 'Error al obtener marcas',
+                        response.ok ? { total: data.data?.length, marcas: data.data } : data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
             } catch (error) {
-                showResult({ error: error.message });
+                if (silent) {
+                    addTestResult('GET /api/marcas', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
             }
         }
 
-        async function testLogin() {
+        async function testLogin(silent = false) {
             try {
                 const response = await fetch(API_URL + '/login', {
                     method: 'POST',
@@ -311,10 +443,112 @@
                     })
                 });
                 const data = await response.json();
-                showResult({ status: response.status, data });
+                
+                if (response.ok && data.token) {
+                    authToken = data.token;
+                    localStorage.setItem('test_token', authToken);
+                    if (!silent) updateAuthStatus(true);
+                }
+                
+                if (silent) {
+                    addTestResult(
+                        'POST /api/login',
+                        response.ok,
+                        response.ok ? 'Login exitoso, token guardado' : 'Error en login',
+                        response.ok ? { usuario: data.usuario?.nombre, token_guardado: true } : data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
             } catch (error) {
-                showResult({ error: error.message });
+                if (silent) {
+                    addTestResult('POST /api/login', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
             }
+        }
+
+        async function testCarrito(silent = false) {
+            if (!authToken) {
+                if (silent) {
+                    addTestResult('GET /api/carrito', false, 'No hay token de autenticacion');
+                } else {
+                    showResult({ error: 'Debes hacer login primero' });
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL + '/carrito', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (silent) {
+                    addTestResult(
+                        'GET /api/carrito',
+                        response.ok,
+                        response.ok ? `Carrito obtenido: ${data.data?.length || 0} items` : 'Error al obtener carrito',
+                        data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
+            } catch (error) {
+                if (silent) {
+                    addTestResult('GET /api/carrito', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
+            }
+        }
+
+        async function testPedidos(silent = false) {
+            if (!authToken) {
+                if (silent) {
+                    addTestResult('GET /api/pedidos', false, 'No hay token de autenticacion');
+                } else {
+                    showResult({ error: 'Debes hacer login primero' });
+                }
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL + '/pedidos', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (silent) {
+                    addTestResult(
+                        'GET /api/pedidos',
+                        response.ok,
+                        response.ok ? `${data.data?.length || 0} pedidos obtenidos` : 'Error al obtener pedidos',
+                        response.ok ? { total: data.data?.length } : data
+                    );
+                } else {
+                    showResult({ status: response.status, data });
+                }
+            } catch (error) {
+                if (silent) {
+                    addTestResult('GET /api/pedidos', false, `Error: ${error.message}`);
+                } else {
+                    showResult({ error: error.message });
+                }
+            }
+        }
+
+        function clearToken() {
+            authToken = null;
+            localStorage.removeItem('test_token');
+            location.reload();
         }
     </script>
 </body>
