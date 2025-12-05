@@ -170,25 +170,24 @@ document.addEventListener("alpine:init", () => {
 
 Alpine.start();
 
-// ------------------------
-// STORE DEL CARRITO
-// ------------------------
+//funcion para la logica del carrito
+// 
 function cartGlobal() {
-    return {
+    return { //carga el carrito desde el navegador
         cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
 
-        get totalItems() {
+        get totalItems() { //contador automatico de productos
             return this.cartItems.reduce((sum, item) => sum + item.qty, 0);
         },
 
-        get totalAmount() {
+        get totalAmount() { //total en dinero suma automatica
             return this.cartItems.reduce(
                 (sum, item) => sum + item.qty * item.price,
                 0
             );
         },
 
-        addToCart(product) {
+        addToCart(product) {  //funcion para agregar productos atravez de un bucle
             let exists = this.cartItems.find((p) => p.id === product.id);
 
             if (exists) {
@@ -197,12 +196,14 @@ function cartGlobal() {
                 this.cartItems.push({ ...product, qty: 1 }); // CORREGIDO
             }
 
+            //guarda el carrito en el navegador
             this.save();
 
-            // Solo raíz del carrito escucha esto
+            // abre el modal del carrito
             window.dispatchEvent(new CustomEvent("open-cart"));
         },
 
+        //guarda el carrito en local storage 
         save() {
             localStorage.setItem("cartItems", JSON.stringify(this.cartItems));
         }
