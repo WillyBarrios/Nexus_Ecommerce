@@ -1,6 +1,7 @@
 <div x-data="cart()" 
      x-init="loadCart()" 
      @toggle-cart.window="open = !open"
+     @add-to-cart.window="add($event.detail)"
      x-cloak>
 
     <!-- Modal -->
@@ -132,4 +133,10 @@ function cart() {
         }
     }
 }
+
+window.addEventListener('add-to-cart', (event) => {
+    let product = event.detail;
+    cartInstance.add(product);
+});
+
 </script>

@@ -158,10 +158,53 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-//hace referencia  para la configuracion de el carrito
-import Alpine from 'alpinejs';
+//codigo para funcionamiento del modal y para agregar productos al carrito 
+import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
+// GLOBAL: REGISTRA EL STORE DEL CARRITO
+document.addEventListener("alpine:init", () => {
+    Alpine.data("cartGlobal", cartGlobal);
+});
+
 Alpine.start();
+
+// ------------------------
+// STORE DEL CARRITO
+// ------------------------
+function cartGlobal() {
+    return {
+        cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
+
+        get totalItems() {
+            return this.cartItems.reduce((sum, item) => sum + item.qty, 0);
+        },
+
+        get totalAmount() {
+            return this.cartItems.reduce(
+                (sum, item) => sum + item.qty * item.price,
+                0
+            );
+        },
+
+        addToCart(product) {
+            let exists = this.cartItems.find((p) => p.id === product.id);
+
+            if (exists) {
+                exists.qty++;
+            } else {
+                this.cartItems.push({ ...product, qty: 1 }); // CORREGIDO
+            }
+
+            this.save();
+
+            // Solo raíz del carrito escucha esto
+            window.dispatchEvent(new CustomEvent("open-cart"));
+        },
+
+        save() {
+            localStorage.setItem("cartItems", JSON.stringify(this.cartItems));
+        }
+    };
+}
