@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,11 @@ class User extends Authenticatable
     // Clave primaria
     protected $primaryKey = 'id_usuario';
 
-    // Nombres de las columnas de timestamps
+    // Si la PK es autoincremental y es int (ajusta si no es el caso)
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+    // Nombres de las columnas de timestamps (Laravel los usará automáticamente)
     const CREATED_AT = 'fecha_creacion';
     const UPDATED_AT = 'fecha_actualizacion';
 
@@ -36,26 +41,49 @@ class User extends Authenticatable
         'contrasena',
     ];
 
-    // Casts de atributos
-    protected function casts(): array
+    // Casts de atributos (fechas y otros)
+    protected $casts = [
+        'fecha_creacion' => 'datetime',
+        'fecha_actualizacion' => 'datetime',
+    ];
+
+    /**
+     * Mutator: al asignar 'contrasena' la guardamos hasheada.
+     * Evita que olvides hashear la contraseña en el servicio/controlador.
+     */
+    public function setContrasenaAttribute($value)
     {
-        return [
-            'contrasena' => 'hashed',
-        ];
+        if (!is_null($value) && $value !== '') {
+            // Si ya está hasheada (por alguna razón), no volver a hashear:
+            if (Hash::needsRehash($value)) {
+                $this->attributes['contrasena'] = Hash::make($value);
+            } else {
+                $this->attributes['contrasena'] = $value;
+            }
+        }
     }
 
-    // Personalizar serialización a JSON
-    public function toArray()
+    /**
+     * Definir cuál es el campo que Laravel Auth usa como password.
+     */
+    public function getAuthPassword()
     {
-        return [
-            'id' => $this->id_usuario,
-            'name' => $this->nombre_completo,
-            'email' => $this->correo_electronico,
-            'telefono' => $this->telefono,
-            'direccion' => $this->direccion,
-            'id_rol' => $this->id_rol,
-            'created_at' => $this->fecha_creacion,
-            'updated_at' => $this->fecha_actualizacion,
-        ];
+        return $this->contrasena;
     }
+
+    /**
+     * Si necesitas un accessor para compatibilidad (opcional).
+     * Por ejemplo: $user->name devolverá nombre_completo
+     */
+    public function getNameAttribute()
+    {
+        return $this->nombre_completo;
+    }
+
+    /**
+     * Si necesitas crear una representación simplificada en array/json,
+     * es mejor usar accessors o Resources, no sobrescribir toArray.
+     * Si realmente quieres campos personalizados al serializar,
+     * usa un API Resource (Recommended).
+     */
 }

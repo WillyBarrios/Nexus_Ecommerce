@@ -3,57 +3,109 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UsuarioService
 {
-    public function listarUsuarios($filtros = [], $perPage = 15)
-    {
-        $query = User::query();
-        
-        if (isset($filtros['rol']) && $filtros['rol'] != '') {
-            $query->where('id_rol', $filtros['rol']);
-        }
-        
-        return $query->orderBy('fecha_creacion', 'desc')->paginate($perPage);
+    /**
+     * Lista usuarios aplicando filtros y paginación.
+     *
+     * @param array $filtros
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+   public function listarUsuarios(array $filtros = [], int $perPage = 15): LengthAwarePaginator
+{
+    $query = User::query();
+
+    // Comprobar si la clave 'rol' existe en el array y tiene valor válido.
+    // Usamos array_key_exists para distinguir entre "no existe" y valor '0'.
+    if (array_key_exists('rol', $filtros) && $filtros['rol'] !== null && $filtros['rol'] !== '') {
+        $rol = (int) $filtros['rol'];
+        $query->where('id_rol', $rol);
     }
-    
-    public function obtenerUsuario($id)
+
+    $query->orderBy('fecha_creacion', 'desc');
+
+    return $query->paginate($perPage);
+}
+
+    /**
+     * Obtener un usuario por su id (lanza ModelNotFoundException si no existe).
+     *
+     * @param mixed $id
+     * @return User
+     */
+    public function obtenerUsuario($id): User
     {
+        // Si tu PK se llama id_usuario, asegúrate que el modelo lo tenga configurado
         return User::findOrFail($id);
     }
-    
-    public function crearUsuario($datos)
+
+    /**
+     * Crear usuario (usa transaction).
+     *
+     * @param array $datos
+     * @return User
+     */
+    public function crearUsuario(array $datos): User
     {
-        $datos['contrasena'] = Hash::make($datos['contrasena']);
-        
-        return User::create($datos);
+        return DB::transaction(function () use ($datos) {
+            // Sanitizar y mapear datos si es necesario
+            if (isset($datos['contrasena'])) {
+                $datos['contrasena'] = Hash::make($datos['contrasena']);
+            }
+
+            // Asegúrate de que $fillable en el modelo permita estos campos
+            return User::create($datos);
+        });
     }
-    
-    public function actualizarUsuario($id, $datos)
+
+    /**
+     * Actualizar usuario.
+     *
+     * @param mixed $id
+     * @param array $datos
+     * @return User
+     */
+    public function actualizarUsuario($id, array $datos): User
     {
-        $usuario = User::findOrFail($id);
-        
-        $datosActualizar = collect($datos)->except('contrasena')->toArray();
-        
-        if (isset($datos['contrasena']) && !empty($datos['contrasena'])) {
-            $datosActualizar['contrasena'] = Hash::make($datos['contrasena']);
-        }
-        
-        $usuario->update($datosActualizar);
-        
-        return $usuario;
+        return DB::transaction(function () use ($id, $datos) {
+            $usuario = User::findOrFail($id);
+
+            $datosActualizar = collect($datos)->except('contrasena')->toArray();
+
+            if (!empty($datos['contrasena'])) {
+                $datosActualizar['contrasena'] = Hash::make($datos['contrasena']);
+            }
+
+            $usuario->update($datosActualizar);
+
+            return $usuario->refresh();
+        });
     }
-    
-    public function eliminarUsuario($id, $idUsuarioActual)
+
+    /**
+     * Eliminar usuario (no permite eliminar al usuario actual).
+     *
+     * @param mixed $id
+     * @param mixed|null $idUsuarioActual
+     * @return bool
+     * @throws \Exception
+     */
+    public function eliminarUsuario($id, $idUsuarioActual = null): bool
     {
         if ($id == $idUsuarioActual) {
             throw new \Exception('No puedes eliminar tu propio usuario');
         }
-        
-        $usuario = User::findOrFail($id);
-        $usuario->delete();
-        
-        return true;
+
+        return DB::transaction(function () use ($id) {
+            $usuario = User::findOrFail($id);
+            $usuario->delete();
+            return true;
+        });
     }
 }
