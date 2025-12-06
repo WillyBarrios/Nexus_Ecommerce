@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\CategoriaController;
 use App\Http\Controllers\Api\MarcaController;
@@ -82,7 +81,7 @@ Route::group([], function () {
      * Response 200: Mensaje genérico (por seguridad)
      * Response 422: Error de validación
      */
-    Route::post('/password/forgot', [PasswordResetController::class, 'sendResetLink']);
+    Route::post('/password/forgot', [AuthController::class, 'forgotPassword']);
 
     /**
      * POST /api/password/reset
@@ -100,7 +99,7 @@ Route::group([], function () {
      * Response 400: Token inválido o expirado
      * Response 422: Error de validación
      */
-    Route::post('/password/reset', [PasswordResetController::class, 'reset']);
+    Route::post('/password/reset', [AuthController::class, 'resetPassword']);
 });
 
 /*
