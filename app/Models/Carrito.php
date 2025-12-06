@@ -87,17 +87,17 @@ class Carrito extends Model
     public function toArray()
     {
         return [
-            'id' => $this->id_carrito,
-            'usuario_id' => $this->id_usuario,
+            'id_carrito' => $this->id_carrito,
+            'id_usuario' => $this->id_usuario,
             'estado' => $this->estado,
-            'items' => $this->detalles->map(function($detalle) {
+            'detalles' => $this->detalles->map(function($detalle) {
                 return [
-                    'id' => $detalle->id_detalle_carrito,
+                    'id_detalle_carrito' => $detalle->id_detalle_carrito,
                     'producto' => [
-                        'id' => $detalle->producto->id_producto,
+                        'id_producto' => $detalle->producto->id_producto,
                         'nombre' => $detalle->producto->nombre_producto,
                         'precio' => (float) $detalle->producto->precio,
-                        'imagen' => $detalle->producto->imagenes->first()->url_imagen ?? null,
+                        'imagen_url' => $detalle->producto->imagenes->first()->url_imagen ?? null,
                     ],
                     'cantidad' => $detalle->cantidad,
                     'subtotal' => (float) ($detalle->producto->precio * $detalle->cantidad)
@@ -105,8 +105,8 @@ class Carrito extends Model
             }),
             'total_items' => $this->contarItems(),
             'total' => (float) $this->calcularTotal(),
-            'created_at' => $this->fecha_creacion,
-            'updated_at' => $this->fecha_actualizacion,
+            'fecha_creacion' => $this->fecha_creacion,
+            'fecha_actualizacion' => $this->fecha_actualizacion,
         ];
     }
 }
