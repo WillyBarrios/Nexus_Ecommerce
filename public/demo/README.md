@@ -15,6 +15,13 @@ Sistema de demostración completo del backend de Nexus E-commerce con interfaz w
 - Formulario de registro
 - Visualización de código de peticiones
 - Manejo de tokens
+- Enlace a recuperación de contraseña
+
+### 2.1. **forgot-password.html** - Recuperación de Contraseña
+- Solicitar token de recuperación
+- Restablecer contraseña con token
+- Proceso en 2 pasos
+- Visualización de código
 
 ### 3. **shop.html** - Tienda
 - Catálogo de productos
@@ -102,6 +109,8 @@ O registra tu propio usuario en la sección de autenticación.
 - `POST /api/login` - Inicio de sesión
 - `POST /api/logout` - Cerrar sesión
 - `GET /api/user` - Obtener usuario autenticado
+- `POST /api/password/forgot` - Solicitar recuperación de contraseña
+- `POST /api/password/reset` - Restablecer contraseña
 - `GET /api/productos` - Listar productos
 - `GET /api/categorias` - Listar categorías
 - `GET /api/marcas` - Listar marcas
