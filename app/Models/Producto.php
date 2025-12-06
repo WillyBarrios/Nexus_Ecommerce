@@ -141,29 +141,33 @@ class Producto extends Model
      */
     public function toArray()
     {
+        // Obtener la primera imagen si existe
+        $primeraImagen = $this->imagenes->first();
+        
         return [
-            'id' => $this->id_producto,
+            'id_producto' => $this->id_producto,
             'nombre' => $this->nombre_producto,
             'descripcion' => $this->descripcion,
             'precio' => (float) $this->precio,
             'stock' => $this->existencia,
+            'imagen_url' => $primeraImagen ? $primeraImagen->url_imagen : null,
             'categoria' => $this->categoria ? [
-                'id' => $this->categoria->id_categoria,
+                'id_categoria' => $this->categoria->id_categoria,
                 'nombre' => $this->categoria->nombre_categoria
             ] : null,
             'marca' => $this->marca ? [
-                'id' => $this->marca->id_marca,
+                'id_marca' => $this->marca->id_marca,
                 'nombre' => $this->marca->nombre_marca
             ] : null,
             'imagenes' => $this->imagenes->map(function($imagen) {
                 return [
-                    'id' => $imagen->id_imagen,
-                    'url' => $imagen->url_imagen
+                    'id_imagen' => $imagen->id_imagen,
+                    'url_imagen' => $imagen->url_imagen
                 ];
             }),
             'estado' => $this->estado,
-            'created_at' => $this->fecha_creacion,
-            'updated_at' => $this->fecha_actualizacion,
+            'fecha_creacion' => $this->fecha_creacion,
+            'fecha_actualizacion' => $this->fecha_actualizacion,
         ];
     }
 }
