@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasarelas de Pago - Nexus E-commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="bi bi-credit-card"></i> Pasarelas de Pago</h1>
+            <p>Configuracion y prueba de metodos de pago</p>
+        </div>
+
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn"><i class="bi bi-house"></i> Inicio</a>
+            <a href="auth.html" class="nav-btn"><i class="bi bi-person"></i> Login/Registro</a>
+            <a href="shop.html" class="nav-btn"><i class="bi bi-shop"></i> Tienda</a>
+            <a href="cart.html" class="nav-btn"><i class="bi bi-cart"></i> Carrito</a>
+            <a href="orders.html" class="nav-btn"><i class="bi bi-box"></i> Mis Pedidos</a>
+            <a href="payments.html" class="nav-btn active"><i class="bi bi-credit-card"></i> Pagos</a>
+        </div>
+
+        <div class="content">
+            <div id="authInfo"></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle"></i> Estado del Sistema de Pagos
+                </div>
+                <div style="padding: 20px;">
+                    <h3>Backend: Completamente Implementado</h3>
+                    <p>El sistema de pagos esta 100% funcional en el backend con soporte para:</p>
+                    <ul style="line-height: 2;">
+                        <li>PayPal (Sandbox y Produccion)</li>
+                        <li>Stripe (Test y Produccion)</li>
+                        <li>Tarjeta de credito/debito</li>
+                        <li>Pago en efectivo</li>
+                        <li>Transferencia bancaria</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="background: #ffc107; color: #000;">
+                    <i class="bi bi-exclamation-triangle"></i> Configuracion Pendiente
+                </div>
+                <div style="padding: 20px;">
+                    <h3>Lo que falta para activar pagos reales:</h3>
+                    
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <h4><i class="bi bi-paypal"></i> PayPal</h4>
+                        <p><strong>Estado:</strong> Codigo listo, credenciales pendientes</p>
+                        <p><strong>Que necesitas:</strong></p>
+                        <ol>
+                            <li>Registrarte en PayPal Developer (https://developer.paypal.com)</li>
+                            <li>Crear una App en modo Sandbox</li>
+                            <li>Copiar Client ID y Secret</li>
+                            <li>Pegar en el archivo .env</li>
+                        </ol>
+                        <p><strong>Tiempo estimado:</strong> 5 minutos</p>
+                        <p><strong>Costo:</strong> GRATIS (modo sandbox para pruebas)</p>
+                    </div>
+
+                    <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <h4><i class="bi bi-stripe"></i> Stripe</h4>
+                        <p><strong>Estado:</strong> Codigo listo, credenciales pendientes</p>
+                        <p><strong>Que necesitas:</strong></p>
+                        <ol>
+                            <li>Registrarte en Stripe (https://dashboard.stripe.com/register)</li>
+                            <li>Ir a Developers - API keys</li>
+                            <li>Copiar Publishable key y Secret key (modo test)</li>
+                            <li>Pegar en el archivo .env</li>
+                        </ol>
+                        <p><strong>Tiempo estimado:</strong> 3 minutos</p>
+                        <p><strong>Costo:</strong> GRATIS (modo test para pruebas)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-file-earmark-code"></i> Configuracion del .env
+                </div>
+                <div style="padding: 20px;">
+                    <p>Agrega estas lineas a tu archivo <code>nexus-backend/.env</code>:</p>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto;">
+# PayPal Configuration
+PAYPAL_MODE=sandbox
+PAYPAL_SANDBOX_CLIENT_ID=TU_CLIENT_ID_AQUI
+PAYPAL_SANDBOX_CLIENT_SECRET=TU_SECRET_AQUI
+PAYPAL_CURRENCY=USD
+
+# Stripe Configuration
+STRIPE_PUBLISHABLE_KEY=pk_test_TU_KEY_AQUI
+STRIPE_SECRET_KEY=sk_test_TU_KEY_AQUI
+STRIPE_CURRENCY=usd
+
+# Payment Methods Enabled
+PAYMENT_PAYPAL_ENABLED=true
+PAYMENT_STRIPE_ENABLED=true
+PAYMENT_CARD_ENABLED=true
+PAYMENT_CASH_ENABLED=true
+PAYMENT_TRANSFER_ENABLED=true
+                    </pre>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-check-circle"></i> Endpoints Disponibles
+                </div>
+                <div style="padding: 20px;">
+                    <p>El backend ya tiene estos endpoints listos:</p>
+                    <ul style="line-height: 2;">
+                        <li><code>POST /api/pagos/crear</code> - Crear intencion de pago</li>
+                        <li><code>POST /api/pagos/confirmar</code> - Confirmar pago completado</li>
+                        <li><code>GET /api/pagos</code> - Listar pagos del usuario</li>
+                        <li><code>GET /api/pagos/{id}</code> - Ver detalle de un pago</li>
+                        <li><code>POST /api/pagos/paypal/webhook</code> - Webhook de PayPal</li>
+                        <li><code>POST /api/pagos/stripe/webhook</code> - Webhook de Stripe</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-book"></i> Documentacion
+                </div>
+                <div style="padding: 20px;">
+                    <p>Para mas informacion sobre como configurar las pasarelas de pago, consulta:</p>
+                    <ul>
+                        <li><a href="../docs/GUIA_REGISTRO_PAGOS.md" target="_blank">Guia de Registro en PayPal y Stripe</a></li>
+                        <li><a href="../docs/API.md" target="_blank">Documentacion de API</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-code-square"></i> Ejemplo de Uso
+                </div>
+                <div style="padding: 20px;">
+                    <p>Asi es como el frontend usara las pasarelas de pago:</p>
+                    <pre style="background: #f8f9fa; padding: 15px; border-radius: 8px; overflow-x: auto;">
+// Paso 1: Crear intencion de pago
+const response = await fetch('/api/pagos/crear', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        id_pedido: 123,
+        metodo_pago: 'paypal' // o 'stripe', 'tarjeta', etc.
+    })
+});
+
+const data = await response.json();
+// data.detalles_pago contiene la info para PayPal/Stripe
+
+// Paso 2: Procesar pago con PayPal/Stripe
+// (El frontend carga el SDK y procesa el pago)
+
+// Paso 3: Confirmar pago
+await fetch('/api/pagos/confirmar', {
+    method: 'POST',
+    headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        id_pago: data.pago.id_pago,
+        referencia_transaccion: 'PAYPAL-123ABC'
+    })
+});
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Verificar autenticacion
+        if (!Auth.isAuthenticated()) {
+            Utils.showAlert('Debes iniciar sesion para ver esta pagina', 'error');
+            setTimeout(() => {
+                window.location.href = 'auth.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
