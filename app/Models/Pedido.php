@@ -109,18 +109,22 @@ class Pedido extends Model
      */
     public function toArray()
     {
+        // Obtener el primer pago si existe
+        $pago = $this->pagos->first();
+        
         return [
-            'id' => $this->id_pedido,
+            'id_pedido' => $this->id_pedido,
+            'numero_pedido' => $this->numero_pedido,
             'usuario' => [
-                'id' => $this->usuario->id_usuario,
-                'nombre' => $this->usuario->nombre_completo,
-                'email' => $this->usuario->correo_electronico,
+                'id_usuario' => $this->usuario->id_usuario,
+                'nombre_completo' => $this->usuario->nombre_completo,
+                'correo_electronico' => $this->usuario->correo_electronico,
             ],
-            'items' => $this->detalles->map(function($detalle) {
+            'detalles' => $this->detalles->map(function($detalle) {
                 return [
-                    'id' => $detalle->id_detalle_pedido,
+                    'id_detalle_pedido' => $detalle->id_detalle_pedido,
                     'producto' => [
-                        'id' => $detalle->producto->id_producto,
+                        'id_producto' => $detalle->producto->id_producto,
                         'nombre' => $detalle->producto->nombre_producto,
                     ],
                     'cantidad' => $detalle->cantidad,
@@ -128,13 +132,18 @@ class Pedido extends Model
                     'subtotal' => (float) $detalle->subtotal
                 ];
             }),
-            'total' => (float) $this->monto_total,
+            'monto_total' => (float) $this->monto_total,
             'estado' => $this->estado,
+            'pago' => $pago ? [
+                'id_pago' => $pago->id_pago,
+                'metodo_pago' => $pago->metodo_pago,
+                'estado' => $pago->estado,
+            ] : null,
             'direccion_envio' => $this->direccion_envio,
             'telefono_contacto' => $this->telefono_contacto,
             'notas' => $this->notas,
-            'created_at' => $this->fecha_creacion,
-            'updated_at' => $this->fecha_actualizacion,
+            'fecha_creacion' => $this->fecha_creacion,
+            'fecha_actualizacion' => $this->fecha_actualizacion,
         ];
     }
 }
