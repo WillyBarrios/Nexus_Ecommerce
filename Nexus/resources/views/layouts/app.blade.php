@@ -25,7 +25,7 @@
 
 <body 
     x-data="cartGlobal()"
-    class="bg-white text-gray-900 flex flex-col min-h-screen"
+    class="bg-[#f4f6fb] text-gray-900 flex flex-col min-h-screen"
 >
 
     {{-- NAVBAR RESPONSIVO --}}
