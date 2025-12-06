@@ -27,8 +27,8 @@ class Marca extends Model
     public function toArray()
     {
         return [
-            'id' => $this->id_marca,
-            'nombre' => $this->nombre_marca,
+            'id_marca' => $this->id_marca,
+            'nombre_marca' => $this->nombre_marca,
             'descripcion' => $this->descripcion,
             'total_productos' => $this->productos()->count(),
         ];

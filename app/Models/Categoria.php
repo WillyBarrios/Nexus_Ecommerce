@@ -27,8 +27,8 @@ class Categoria extends Model
     public function toArray()
     {
         return [
-            'id' => $this->id_categoria,
-            'nombre' => $this->nombre_categoria,
+            'id_categoria' => $this->id_categoria,
+            'nombre_categoria' => $this->nombre_categoria,
             'descripcion' => $this->descripcion,
             'total_productos' => $this->productos()->count(),
         ];
