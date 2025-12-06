@@ -13,6 +13,8 @@ class AuthService
             'nombre_completo' => $datos['name'],
             'correo_electronico' => $datos['email'],
             'contrasena' => $datos['password'],
+            'telefono' => $datos['telefono'] ?? null,
+            'direccion' => $datos['direccion'] ?? null,
             'id_rol' => 3,
         ]);
 

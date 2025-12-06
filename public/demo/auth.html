@@ -20,6 +20,7 @@
             <a href="shop.html" class="nav-btn"><i class="bi bi-shop"></i> Tienda</a>
             <a href="cart.html" class="nav-btn"><i class="bi bi-cart"></i> Carrito</a>
             <a href="orders.html" class="nav-btn"><i class="bi bi-box"></i> Mis Pedidos</a>
+            <a href="payments.html" class="nav-btn"><i class="bi bi-credit-card"></i> Pagos</a>
         </div>
 
         <div class="content">
@@ -111,9 +112,9 @@
             
             Utils.showCode('POST /api/login', { request: requestData, response: result });
 
-            if (result.ok && result.data.token) {
-                Auth.setToken(result.data.token);
-                Auth.setUser(result.data.usuario || result.data.user);
+            if (result.ok && result.data.data && result.data.data.token) {
+                Auth.setToken(result.data.data.token);
+                Auth.setUser(result.data.data.user);
                 Utils.showAlert('Login exitoso! Redirigiendo...', 'success');
                 setTimeout(() => window.location.href = 'shop.html', 1500);
             } else {
@@ -136,10 +137,10 @@
             }
 
             const requestData = {
-                nombre_completo: nombre,
-                correo_electronico: email,
-                contrasena: password,
-                contrasena_confirmation: passwordConfirm,
+                name: nombre,
+                email: email,
+                password: password,
+                password_confirmation: passwordConfirm,
                 telefono: telefono,
                 direccion: direccion
             };
@@ -150,9 +151,9 @@
             
             Utils.showCode('POST /api/register', { request: requestData, response: result });
 
-            if (result.ok && result.data.token) {
-                Auth.setToken(result.data.token);
-                Auth.setUser(result.data.usuario || result.data.user);
+            if (result.ok && result.data.data && result.data.data.token) {
+                Auth.setToken(result.data.data.token);
+                Auth.setUser(result.data.data.user);
                 Utils.showAlert('Registro exitoso! Redirigiendo...', 'success');
                 setTimeout(() => window.location.href = 'shop.html', 1500);
             } else {
