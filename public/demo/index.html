@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus E-commerce - Demo Interactivo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="bi bi-shop"></i> Nexus E-commerce</h1>
+            <p>Demo Interactivo del Sistema de E-commerce</p>
+        </div>
+
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn active"><i class="bi bi-house"></i> Inicio</a>
+            <a href="auth.html" class="nav-btn"><i class="bi bi-person"></i> Login/Registro</a>
+            <a href="shop.html" class="nav-btn"><i class="bi bi-shop"></i> Tienda</a>
+            <a href="cart.html" class="nav-btn"><i class="bi bi-cart"></i> Carrito</a>
+            <a href="orders.html" class="nav-btn"><i class="bi bi-box"></i> Mis Pedidos</a>
+        </div>
+
+        <div class="content">
+            <div id="authInfo"></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle"></i> Bienvenido al Demo Interactivo
+                </div>
+                <p style="margin-bottom: 20px;">
+                    Este es un sistema de demostracion completo del backend de Nexus E-commerce. 
+                    Aqui puedes probar todas las funcionalidades del sistema de forma interactiva.
+                </p>
+                
+                <h3 style="color: #667eea; margin-bottom: 15px;">Que puedes hacer aqui:</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-person-plus"></i> Autenticacion</h4>
+                        <p>Registrate como nuevo usuario o inicia sesion con credenciales existentes.</p>
+                        <a href="auth.html" class="btn btn-primary" style="display: inline-block; text-decoration: none; margin-top: 10px;">
+                            Ir a Login/Registro
+                        </a>
+                    </div>
+
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-shop"></i> Explorar Productos</h4>
+                        <p>Navega por el catalogo de productos, filtra por categorias y marcas.</p>
+                        <a href="shop.html" class="btn btn-primary" style="display: inline-block; text-decoration: none; margin-top: 10px;">
+                            Ver Tienda
+                        </a>
+                    </div>
+
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-cart-plus"></i> Carrito de Compras</h4>
+                        <p>Agrega productos al carrito, modifica cantidades y procede al checkout.</p>
+                        <a href="cart.html" class="btn btn-primary" style="display: inline-block; text-decoration: none; margin-top: 10px;">
+                            Ver Carrito
+                        </a>
+                    </div>
+
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-credit-card"></i> Proceso de Pago</h4>
+                        <p>Completa el proceso de compra y genera pedidos desde tu carrito.</p>
+                        <a href="checkout.html" class="btn btn-primary" style="display: inline-block; text-decoration: none; margin-top: 10px;">
+                            Ir a Checkout
+                        </a>
+                    </div>
+
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-box-seam"></i> Mis Pedidos</h4>
+                        <p>Consulta el historial de tus pedidos y su estado actual.</p>
+                        <a href="orders.html" class="btn btn-primary" style="display: inline-block; text-decoration: none; margin-top: 10px;">
+                            Ver Pedidos
+                        </a>
+                    </div>
+
+                    <div class="card" style="background: #f8f9fa;">
+                        <h4><i class="bi bi-code-square"></i> Ver Codigo</h4>
+                        <p>En cada pagina puedes ver el codigo de las peticiones API en tiempo real.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-gear"></i> Credenciales de Prueba
+                </div>
+                <p>Puedes usar estas credenciales para probar el sistema:</p>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <strong>Usuario Admin:</strong><br>
+                    Email: admin@test.com<br>
+                    Password: admin123<br><br>
+                    
+                    <strong>O registra tu propio usuario</strong> en la seccion de Login/Registro
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-info-circle"></i> Informacion Tecnica
+                </div>
+                <ul style="line-height: 2;">
+                    <li><strong>Backend:</strong> Laravel 12 con API REST</li>
+                    <li><strong>Autenticacion:</strong> Laravel Sanctum (Token-based)</li>
+                    <li><strong>Base de Datos:</strong> MySQL</li>
+                    <li><strong>Endpoints:</strong> Productos, Categorias, Marcas, Carrito, Pedidos, Pagos</li>
+                    <li><strong>Frontend Demo:</strong> HTML5, CSS3, JavaScript Vanilla</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

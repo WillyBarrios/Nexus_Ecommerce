@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - Nexus E-commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="bi bi-cart"></i> Mi Carrito</h1>
+            <p>Revisa y modifica tus productos</p>
+        </div>
+
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn"><i class="bi bi-house"></i> Inicio</a>
+            <a href="auth.html" class="nav-btn"><i class="bi bi-person"></i> Login/Registro</a>
+            <a href="shop.html" class="nav-btn"><i class="bi bi-shop"></i> Tienda</a>
+            <a href="cart.html" class="nav-btn active"><i class="bi bi-cart"></i> Carrito</a>
+            <a href="orders.html" class="nav-btn"><i class="bi bi-box"></i> Mis Pedidos</a>
+        </div>
+
+        <div class="content">
+            <div id="authInfo"></div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-cart3"></i> Productos en el Carrito
+                </div>
+                <div id="cartItems">
+                    <div class="loading">Cargando carrito...</div>
+                </div>
+                <div id="cartSummary" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 2px solid #dee2e6;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3>Total: <span id="totalAmount" style="color: #667eea;">$0.00</span></h3>
+                        </div>
+                        <div>
+                            <button onclick="clearCart()" class="btn btn-danger" style="margin-right: 10px;">
+                                <i class="bi bi-trash"></i> Vaciar Carrito
+                            </button>
+                            <a href="checkout.html" class="btn btn-success" style="text-decoration: none;">
+                                <i class="bi bi-credit-card"></i> Proceder al Pago
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-code-square"></i> Codigo de la Peticion
+                </div>
+                <div class="code-viewer" id="codeViewer">
+                    <p style="color: #666;">El codigo de la peticion aparecera aqui...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if (!Utils.requireAuth()) {
+            // Redirigir si no esta autenticado
+        }
+
+        let cartItems = [];
+
+        async function loadCart() {
+            Utils.showCode('GET /carrito', {});
+
+            const result = await API.get('/carrito');
+            
+            Utils.showCode('GET /carrito', { response: result });
+
+            if (result.ok) {
+                cartItems = result.data.data || [];
+                renderCart();
+            } else {
+                document.getElementById('cartItems').innerHTML = '<p style="color: red;">Error al cargar el carrito</p>';
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            const summary = document.getElementById('cartSummary');
+
+            if (cartItems.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="bi bi-cart-x" style="font-size: 4em; color: #ccc;"></i>
+                        <h3 style="color: #666; margin-top: 20px;">Tu carrito esta vacio</h3>
+                        <a href="shop.html" class="btn btn-primary" style="margin-top: 20px; text-decoration: none;">
+                            <i class="bi bi-shop"></i> Ir a la Tienda
+                        </a>
+                    </div>
+                `;
+                summary.style.display = 'none';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cartItems.map(item => {
+                const subtotal = item.cantidad * item.producto.precio;
+                total += subtotal;
+                
+                return `
+                    <div class="cart-item">
+                        <img src="${item.producto.imagen_url || 'https://via.placeholder.com/80?text=Sin+Imagen'}" alt="${item.producto.nombre}">
+                        <div class="cart-item-info">
+                            <h4>${item.producto.nombre}</h4>
+                            <p style="color: #666;">${Utils.formatPrice(item.producto.precio)} c/u</p>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity(${item.id_detalle_carrito}, ${item.cantidad - 1})">-</button>
+                            <span style="font-weight: 600; min-width: 30px; text-align: center;">${item.cantidad}</span>
+                            <button onclick="updateQuantity(${item.id_detalle_carrito}, ${item.cantidad + 1})">+</button>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="font-size: 1.2em; font-weight: 600; color: #667eea;">${Utils.formatPrice(subtotal)}</p>
+                            <button onclick="removeItem(${item.id_detalle_carrito})" class="btn btn-danger" style="padding: 5px 15px; font-size: 0.9em;">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('totalAmount').textContent = Utils.formatPrice(total);
+            summary.style.display = 'block';
+        }
+
+        async function updateQuantity(itemId, newQuantity) {
+            if (newQuantity < 1) {
+                removeItem(itemId);
+                return;
+            }
+
+            const requestData = { cantidad: newQuantity };
+            Utils.showCode(`PUT /carrito/actualizar/${itemId}`, { request: requestData });
+
+            const result = await API.put(`/carrito/actualizar/${itemId}`, requestData);
+            
+            Utils.showCode(`PUT /carrito/actualizar/${itemId}`, { request: requestData, response: result });
+
+            if (result.ok) {
+                await loadCart();
+                Utils.showAlert('Cantidad actualizada', 'success');
+            } else {
+                Utils.showAlert(result.data.message || 'Error al actualizar', 'error');
+            }
+        }
+
+        async function removeItem(itemId) {
+            if (!confirm('¿Eliminar este producto del carrito?')) return;
+
+            Utils.showCode(`DELETE /carrito/eliminar/${itemId}`, {});
+
+            const result = await API.delete(`/carrito/eliminar/${itemId}`);
+            
+            Utils.showCode(`DELETE /carrito/eliminar/${itemId}`, { response: result });
+
+            if (result.ok) {
+                await loadCart();
+                Utils.showAlert('Producto eliminado del carrito', 'success');
+            } else {
+                Utils.showAlert(result.data.message || 'Error al eliminar', 'error');
+            }
+        }
+
+        async function clearCart() {
+            if (!confirm('¿Vaciar todo el carrito?')) return;
+
+            Utils.showCode('DELETE /carrito/vaciar', {});
+
+            const result = await API.delete('/carrito/vaciar');
+            
+            Utils.showCode('DELETE /carrito/vaciar', { response: result });
+
+            if (result.ok) {
+                await loadCart();
+                Utils.showAlert('Carrito vaciado', 'success');
+            } else {
+                Utils.showAlert(result.data.message || 'Error al vaciar carrito', 'error');
+            }
+        }
+
+        window.addEventListener('load', loadCart);
+    </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login y Registro - Nexus E-commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="bi bi-person-circle"></i> Autenticacion</h1>
+            <p>Inicia sesion o registrate para continuar</p>
+        </div>
+
+        <div class="nav-menu">
+            <a href="index.html" class="nav-btn"><i class="bi bi-house"></i> Inicio</a>
+            <a href="auth.html" class="nav-btn active"><i class="bi bi-person"></i> Login/Registro</a>
+            <a href="shop.html" class="nav-btn"><i class="bi bi-shop"></i> Tienda</a>
+            <a href="cart.html" class="nav-btn"><i class="bi bi-cart"></i> Carrito</a>
+            <a href="orders.html" class="nav-btn"><i class="bi bi-box"></i> Mis Pedidos</a>
+        </div>
+
+        <div class="content">
+            <div id="authInfo"></div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesion
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>Correo Electronico</label>
+                            <input type="email" id="loginEmail" value="admin@test.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contrasena</label>
+                            <input type="password" id="loginPassword" value="admin123" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesion
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-person-plus"></i> Registrarse
+                    </div>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="regNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electronico</label>
+                            <input type="email" id="regEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contrasena</label>
+                            <input type="password" id="regPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Contrasena</label>
+                            <input type="password" id="regPasswordConfirm" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input type="text" id="regTelefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Direccion</label>
+                            <input type="text" id="regDireccion" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="bi bi-code-square"></i> Codigo de la Peticion
+                </div>
+                <div class="code-viewer" id="codeViewer">
+                    <p style="color: #666;">El codigo de la peticion aparecera aqui...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const requestData = { email, password };
+            Utils.showCode('POST /api/login', { request: requestData });
+
+            const result = await API.post('/login', requestData);
+            
+            Utils.showCode('POST /api/login', { request: requestData, response: result });
+
+            if (result.ok && result.data.token) {
+                Auth.setToken(result.data.token);
+                Auth.setUser(result.data.usuario || result.data.user);
+                Utils.showAlert('Login exitoso! Redirigiendo...', 'success');
+                setTimeout(() => window.location.href = 'shop.html', 1500);
+            } else {
+                Utils.showAlert(result.data.message || 'Error en el login', 'error');
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('regNombre').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+            const telefono = document.getElementById('regTelefono').value;
+            const direccion = document.getElementById('regDireccion').value;
+
+            if (password !== passwordConfirm) {
+                Utils.showAlert('Las contrasenas no coinciden', 'error');
+                return;
+            }
+
+            const requestData = {
+                nombre_completo: nombre,
+                correo_electronico: email,
+                contrasena: password,
+                contrasena_confirmation: passwordConfirm,
+                telefono: telefono,
+                direccion: direccion
+            };
+
+            Utils.showCode('POST /api/register', { request: requestData });
+
+            const result = await API.post('/register', requestData);
+            
+            Utils.showCode('POST /api/register', { request: requestData, response: result });
+
+            if (result.ok && result.data.token) {
+                Auth.setToken(result.data.token);
+                Auth.setUser(result.data.usuario || result.data.user);
+                Utils.showAlert('Registro exitoso! Redirigiendo...', 'success');
+                setTimeout(() => window.location.href = 'shop.html', 1500);
+            } else {
+                const errorMsg = result.data.message || JSON.stringify(result.data.errors || result.data);
+                Utils.showAlert('Error: ' + errorMsg, 'error');
+            }
+        });
+
+        if (Auth.isAuthenticated()) {
+            Utils.showAlert('Ya has iniciado sesion', 'info');
+        }
+    </script>
+</body>
+</html>
