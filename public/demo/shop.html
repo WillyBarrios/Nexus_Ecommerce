@@ -175,7 +175,8 @@
 
             const result = await API.get('/carrito');
             if (result.ok) {
-                const count = result.data.data?.length || 0;
+                const carrito = result.data.data || {};
+                const count = carrito.detalles?.length || 0;
                 document.getElementById('cartCount').textContent = count;
             }
         }

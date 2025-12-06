@@ -77,7 +77,10 @@
             Utils.showCode('GET /carrito', { response: result });
 
             if (result.ok) {
-                cartItems = result.data.data || [];
+                const carrito = result.data.data || {};
+                cartItems = carrito.detalles || [];
+                console.log('Carrito cargado:', carrito);
+                console.log('Items del carrito:', cartItems);
                 renderCart();
             } else {
                 document.getElementById('cartItems').innerHTML = '<p style="color: red;">Error al cargar el carrito</p>';
