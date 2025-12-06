@@ -77,7 +77,8 @@
      class="flex gap-8 overflow-hidden pb-3">
 
                 {{-- CARD 1 --}}
-            <article 
+                {{--conecta con el script atravez del id para agregar al carrito --}}
+            <article     
                  x-data="{
                 product: {
                 id: 1,
@@ -88,6 +89,7 @@
                          }"
                 class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
 
+                <!-- contenedor de imagen y descripcion mas estilos-->
                 <div>
                  <img src="img/tabk10.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Tablet">
                  <h4 class="font-semibold text-[#6F73BF] ">Tab K10 Lenovo</h4>
@@ -99,6 +101,7 @@
                 <div class="mt-4">
                    <p class="font-bold text-[#2128a6]">Q 1800.00</p>
 
+                   <!--en la funcion agrega el producto a el carrito-->
                   <button 
                      @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
                     class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
@@ -108,134 +111,133 @@
                 </article>
 
 
+                <!--para las siguientes cards es los mismos estilos, logica para agregar
+                al carrito los productos con id y funcion igual a todas las cards-->
                 <!--card2-->
                 <article 
                     x-data="{
-        product: {
-            id: 2,
-            name: 'Audifonos JBL Tune 760NC',
-            price: 950,
-            image: '/img/audifonos.jpg'
-        }
-    }"
-    class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
+                    product: {
+                    id: 2,
+                    name: 'Audifonos JBL Tune 760NC',
+                    price: 950,
+                    image: '/img/audifonos.jpg'
+                          }
+                          }"
+                   class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
 
-    <div>
-        <img src="/img/audifonos.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Audifonos">
-        <h4 class="font-semibold text-[#6F73BF] ">Audífonos JBL Tune 760NC</h4>
-        <p class="text-sm text-black mt-1">
-            Hasta 70 horas de reproducción total. Carga rápida de 5 minutos para 3 horas.
-        </p>
-    </div>
+                <div>
+                   <img src="/img/audifonos.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Audifonos">
+                   <h4 class="font-semibold text-[#6F73BF] ">Audífonos JBL Tune 760NC</h4>
+                   <p class="text-sm text-black mt-1">
+                   Hasta 70 horas de reproducción total. Carga rápida de 5 minutos para 3 horas.
+                   </p>
+               </div>
 
-    <div class="mt-4">
-        <p class="font-bold text-[#2128a6]">Q 950.00</p>
+               <div class="mt-4">
+                   <p class="font-bold text-[#2128a6]">Q 950.00</p>
 
-        <button 
-            @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
-            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
-            Añadir al carrito
-        </button>
-    </div>
-</article>
+                    <button 
+                    @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
+                    class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
+                    Añadir al carrito
+                    </button>
+                </div>
+                </article>
+   
 
+                <!--card3-->
+                <article 
+                   x-data="{
+                   product: {
+                    id: 3,
+                    name: 'Laptop Lenovo IdeaPad Slim 3',
+                    price: 5000,
+                    image: '/img/lenovolaptop.jpg'
+                            }
+                            }"
+                    class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
 
-<article 
-    x-data="{
-        product: {
-            id: 3,
-            name: 'Laptop Lenovo IdeaPad Slim 3',
-            price: 5000,
-            image: '/img/lenovolaptop.jpg'
-        }
-    }"
-    class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
+                                  <div>
+                       <img src="/img/lenovolaptop.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Laptop Lenovo">
+                       <h4 class="font-semibold text-[#6F73BF] ">Laptop Lenovo IdeaPad Slim 3</h4>
+                       <p class="text-sm text-black mt-1">
+                           Disfruta multimedia en una pantalla nítida con Dolby Audio™.
+                       </p>
+                   </div>
+               
+                   <div class="mt-4">
+                       <p class="font-bold text-[#2128a6]">Q 5,000.00</p>
 
-    <div>
-        <img src="/img/lenovolaptop.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Laptop Lenovo">
-        <h4 class="font-semibold text-[#6F73BF] ">Laptop Lenovo IdeaPad Slim 3</h4>
-        <p class="text-sm text-black mt-1">
-            Disfruta multimedia en una pantalla nítida con Dolby Audio™.
-        </p>
-    </div>
+                            <button 
+                                @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
+                                class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
+                                Añadir al carrito
+                            </button>
+                        </div>
+                    </article>
+                   
+                   <!--card4-->
+                   <article 
+                       x-data="{
+                          product: {
+                               id: 4,
+                               name: 'Boss Bottled 100ml',
+                               price: 1500,
+                               image: '/img/perfumehugoboss.jpg'
+                           }
+                       }"
+                 class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
+                   
+                      <div>
+                          <img src="/img/perfumehugoboss.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Perfume Hugo Boss">
+                          <h4 class="font-semibold text-[#6F73BF] ">Boss Bottled 100ml</h4>
+                          <p class="text-sm text-black mt-1">
+                              Fragancia cálida ideal para climas fríos.
+                          </p>
+                      </div>
 
-    <div class="mt-4">
-        <p class="font-bold text-[#2128a6]">Q 5,000.00</p>
+                      <div class="mt-4">
+                          <p class="font-bold text-[#2128a6]">Q 1500.00</p>
 
-        <button 
-            @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
-            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
-            Añadir al carrito
-        </button>
-    </div>
-</article>
+                          <button 
+                              @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
+                              class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
+                              Añadir al carrito
+                          </button>
+                      </div>
+                  </article>
 
+               <!--card5-->
+               <article 
+                   x-data="{
+                           product: {
+                           id: 5,
+                           name: 'Bailarina efecto terciopelo',
+                           price: 400,
+                           image: '/img/bailarinaszapato.webp'
+                       }
+                   }"
+                   class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
 
-<article 
-    x-data="{
-        product: {
-            id: 4,
-            name: 'Boss Bottled 100ml',
-            price: 1500,
-            image: '/img/perfumehugoboss.jpg'
-        }
-    }"
-    class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
+                   <div>
+                       <img src="/img/bailarinaszapato.webp" class="rounded-xl mb-4 w-full object-cover" alt="Zapatos">
+                       <h4 class="font-semibold text-[#6F73BF] ">Bailarina efecto terciopelo</h4>
+                       <p class="text-sm text-black mt-1">
+                           Escote cuadrado. Hebilla metálica. Punta redonda.
+                       </p>
+                   </div>
 
-    <div>
-        <img src="/img/perfumehugoboss.jpg" class="rounded-xl mb-4 w-full object-cover" alt="Perfume Hugo Boss">
-        <h4 class="font-semibold text-[#6F73BF] ">Boss Bottled 100ml</h4>
-        <p class="text-sm text-black mt-1">
-            Fragancia cálida ideal para climas fríos.
-        </p>
-    </div>
+                   <div class="mt-4">
+                       <p class="font-bold text-[#2128a6]">Q 400.00</p>
 
-    <div class="mt-4">
-        <p class="font-bold text-[#2128a6]">Q 1500.00</p>
-
-        <button 
-            @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
-            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
-            Añadir al carrito
-        </button>
-    </div>
-</article>
-
-
-<article 
-    x-data="{
-        product: {
-            id: 5,
-            name: 'Bailarina efecto terciopelo',
-            price: 400,
-            image: '/img/bailarinaszapato.webp'
-        }
-    }"
-    class="min-w-[260px] bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 flex flex-col justify-between snap-start">
-
-    <div>
-        <img src="/img/bailarinaszapato.webp" class="rounded-xl mb-4 w-full object-cover" alt="Zapatos">
-        <h4 class="font-semibold text-[#6F73BF] ">Bailarina efecto terciopelo</h4>
-        <p class="text-sm text-black mt-1">
-            Escote cuadrado. Hebilla metálica. Punta redonda.
-        </p>
-    </div>
-
-    <div class="mt-4">
-        <p class="font-bold text-[#2128a6]">Q 400.00</p>
-
-        <button 
-            @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
-            class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
-            Añadir al carrito
-        </button>
-    </div>
-</article>
-
-
-                
-
-            </div>
+                           <button 
+                               @click="window.dispatchEvent(new CustomEvent('add-to-cart', { detail: product }))"
+                               class="mt-3 w-full bg-[#6F73BF] hover:bg-[#2128a6] text-white text-sm font-semibold py-2.5 rounded-lg">
+                               Añadir al carrito
+                           </button>
+                       </div>
+                   </article>                   
+                               </div>
 
 
             <!-- Flecha derecha -->
